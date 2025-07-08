@@ -39,6 +39,7 @@ public:
 	std::vector<GameObject*> FindGameObjects(const std::string& name);
 	void FindGameObjects(const std::string& name, std::vector<GameObject*>& results);
 
+	virtual void AddScore(int points) {} //LMJ: Added for UI
 
 	sf::Vector2f ScreenToWorld(sf::Vector2i screenPos);
 	sf::Vector2i WorldToScreen(sf::Vector2f worldPos);

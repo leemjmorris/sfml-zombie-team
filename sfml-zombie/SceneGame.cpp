@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include "Zombie.h"
 #include "UserInterface.h"
+#include "TextGo.h"
 
 SceneGame::SceneGame() 
 	: Scene(SceneIds::Game)
@@ -32,13 +33,24 @@ void SceneGame::Init()
 		zombiePool.push_back(zombie);
 	}
 
+	if (userInterface)
+	{
+		AddGameObject(userInterface->GetScoreText());
+		AddGameObject(userInterface->GetHighScoreText());
+		AddGameObject(userInterface->GetAmmoText());
+		AddGameObject(userInterface->GetWaveCountText());
+		AddGameObject(userInterface->GetZombieCountText());
+
+		std::cout << "UI TextGo objects added to scene" << std::endl;
+	}
+
+
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
-
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
 	worldView.setSize(windowSize);
@@ -46,6 +58,12 @@ void SceneGame::Enter()
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
+
+	score = 0; //LMJ : Updated for the UI making
+	if (userInterface)
+	{
+		userInterface->SetScore(score);
+	}
 
 	Scene::Enter();
 
@@ -73,6 +91,11 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 
+	if (userInterface)
+	{
+		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
+	}
+
 	auto it = zombieList.begin();
 	while (it != zombieList.end())
 	{
@@ -98,6 +121,16 @@ void SceneGame::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+
+	if (userInterface)
+	{
+		userInterface->SetScore(score);
+		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
+	}
+
+	//userInterface->SetScore(score);
+	////userInterface->SetWaveCount(currentWave); LMJ: Will Add this when Wave is merged together.
+	//userInterface->SetZombieCount(zombieList.size());
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -107,6 +140,11 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	userInterface->SetScore(score);
 	window.setView(uiView);
 	window.draw(cursor);
+
+	if (userInterface)
+	{
+		userInterface->Draw(window);
+	}
 }
 
 void SceneGame::SpawnZombies(int count)
@@ -131,3 +169,17 @@ void SceneGame::SpawnZombies(int count)
 		zombieList.push_back(zombie);
 	}
 }
+
+void SceneGame::AddScore(int points)
+{
+	score += points;
+
+	// UserInterface에 점수 업데이트
+	if (userInterface)
+	{
+		userInterface->SetScore(score);
+	}
+
+	std::cout << "Score updated: " << score << std::endl;
+}
+

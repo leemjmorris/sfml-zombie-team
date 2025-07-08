@@ -65,5 +65,9 @@ public:
 
 	void Shoot();
 	void OnDamage(int damage);
+
+	//LMJ: Health related methods. Used in UserInterface.
+	int GetHp() const { return hp; }
+	int GetMaxHp() const { return maxHp; }
 };
 

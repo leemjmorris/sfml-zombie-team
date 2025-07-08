@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Zombie.h"
 #include "Player.h"
+#include "SceneGame.h"
 
 Zombie::Zombie(const std::string& name)
 	: GameObject(name)
@@ -108,26 +109,28 @@ void Zombie::SetType(Types type)
 	case Types::Bloater:
 		texId = "graphics/bloater.png";
 		maxHp = 200;
-		speed = 50;
-		damage = 100.f;
-		attackInterval = 1.f;
+		speed = 50.0f;                    // float으로 명시적 지정
+		damage = 100.0f;                  // float으로 명시적 지정
+		attackInterval = 1.0f;            // float으로 명시적 지정
+		scoreValue = 50;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
-		speed = 100.f;
-		damage = 100.f;
-		attackInterval = 1.f;
+		speed = 100.0f;
+		damage = 100.0f;
+		attackInterval = 1.0f;
+		scoreValue = 30;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
-		speed = 200;
-		damage = 100.f;
-		attackInterval = 1.f;
+		speed = 200.0f;
+		damage = 100.0f;
+		attackInterval = 1.0f;
+		scoreValue = 20;
 		break;
 	}
-
 }
 
 void Zombie::OnDamage(int damage)
@@ -135,6 +138,14 @@ void Zombie::OnDamage(int damage)
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
 	if (hp == 0)
 	{
+		// Scene을 통해 점수 추가
+		Scene* currentScene = SCENE_MGR.GetCurrentScene();
+		if (currentScene)
+		{
+			currentScene->AddScore(scoreValue);
+		}
+
 		SetActive(false);
 	}
 }
+

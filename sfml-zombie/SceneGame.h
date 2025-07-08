@@ -28,6 +28,9 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void AddScore(int points) override;
+	int GetScore() const { return score; }
+
 	void SpawnZombies(int count);
 
 	const std::list<Zombie*>& GetZombies() const 

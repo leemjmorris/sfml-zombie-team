@@ -17,6 +17,9 @@ public:
 	static const int TotalTypes = 3;
 	
 protected:
+	int hp = 0;
+	int scoreValue = 0; //LMJ : Made For UI Score Count.
+
 	Types type = Types::Bloater;
 
 	sf::Sprite body;
@@ -26,10 +29,9 @@ protected:
 
 	int maxHp = 0;
 	float speed = 0.f;
-	int damage = 0;
+	float damage = 0.f;
 	float attackInterval = 0.f;
 
-	int hp;
 	float attackTimer = 0.f;
 
 	Player* player = nullptr;
