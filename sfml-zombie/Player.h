@@ -7,6 +7,19 @@ class Bullet;
 
 class Player : public GameObject
 {
+public:
+	// player Upgrade type enum class
+	enum class UpgradeType
+	{
+		Not = -1,
+		FireRate,
+		ClipSize,
+		MaxHP,
+		Speed,
+		HealthPickUp,
+		AmmoPickUp,
+	};
+
 protected:
 	sf::Sprite body;
 	std::string texId = "graphics/player.png";
@@ -23,11 +36,15 @@ protected:
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
 
-	float shootInterval = 0.1f;
+	float shootInterval = 2.f;
 	float shootTimer = 0.f;
 
 	int hp = 0;
 	int maxHp = 100;
+
+	// Ammo
+	int ammoUpgradeMount = 1;
+
 
 public:
 	bool IsAlive() const { return hp > 0; }
@@ -64,5 +81,8 @@ public:
 
 	void Shoot();
 	void OnDamage(int damage);
+
+	// player upgrade function
+	void Upgrade(UpgradeType type);
 };
 

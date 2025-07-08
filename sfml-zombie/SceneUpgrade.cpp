@@ -72,7 +72,6 @@ void SceneUpgrade::Update(float dt)
 	{
 		if (Utils::PointInTransformBounds(texts[i].GetText(), texts[i].GetLocalBounds(), (sf::Vector2f)InputMgr::GetMousePosition()))
 		{
-			std::cout << i << std::endl;
 			menuUi->SetBarPos(i);
 			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 			{
@@ -84,6 +83,8 @@ void SceneUpgrade::Update(float dt)
 	
 	if (isChoosed)
 	{
-		player.Upgrade((Player::UpgradeType)choosedPos);
+		std::cout << choosedPos << std::endl;
+		SCENE_MGR.SetPlayerUpgradeType(choosedPos);
+		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
 }

@@ -9,9 +9,11 @@ protected:
 
 	std::unordered_map<SceneIds, Scene*> scenes;
 
-	SceneIds startScene = SceneIds::Upgrade;
+	SceneIds startScene = SceneIds::Game;
 	SceneIds currentScene = SceneIds::None;
 	SceneIds nextScene = SceneIds::None;
+
+	int playerUpgrade = -1;
 
 public:
 	void Init();
@@ -23,6 +25,9 @@ public:
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+
+	int GetPlayerUpgradeType() const { return playerUpgrade; }
+	void SetPlayerUpgradeType(int ty){ playerUpgrade = ty; }
 };
 
 #define SCENE_MGR (SceneMgr::Instance())
