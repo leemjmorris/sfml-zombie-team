@@ -33,4 +33,8 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	// text get bound functions
+	sf::FloatRect GetLocalBounds() const { return text.getLocalBounds(); }
+	sf::FloatRect GetGlobalBounds() const { return text.getGlobalBounds(); }
 };

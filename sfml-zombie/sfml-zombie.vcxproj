@@ -144,6 +144,7 @@
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp" />
+    <ClCompile Include="Framework\MenuUI.cpp" />
     <ClCompile Include="HitBox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Framework\SpriteGo.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="SceneDev2.cpp" />
     <ClCompile Include="Framework\SceneMgr.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneUpgrade.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -168,6 +170,7 @@
     <ClInclude Include="Framework\Defines.h" />
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\InputMgr.h" />
+    <ClInclude Include="Framework\MenuUI.h" />
     <ClInclude Include="Framework\ResourceMgr.h" />
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\SpriteGo.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneUpgrade.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />

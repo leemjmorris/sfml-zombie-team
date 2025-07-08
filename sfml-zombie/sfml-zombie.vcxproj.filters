@@ -72,6 +72,12 @@
     <ClCompile Include="Variables.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SceneUpgrade.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\MenuUI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -135,6 +141,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Variables.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneUpgrade.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\MenuUI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
