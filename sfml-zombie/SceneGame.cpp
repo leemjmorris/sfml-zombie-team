@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "Zombie.h"
+#include "ItemGo.h"
 
 SceneGame::SceneGame() 
 	: Scene(SceneIds::Game)
@@ -18,6 +19,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/bullet.png");
+	texIds.push_back("graphics/ammo_pickup.png");
+	texIds.push_back("graphics/health_pickup.png");
 
 	AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
@@ -28,6 +31,9 @@ void SceneGame::Init()
 		zombie->SetActive(false);
 		zombiePool.push_back(zombie);
 	}
+
+	item = (ItemGo*)AddGameObject(new ItemGo("ammopack"));
+	item->SetTexId("graphics/ammo_pickup.png");
 
 	Scene::Init();
 }

@@ -3,11 +3,13 @@
 
 class Player;
 class Zombie;
+class ItemGo;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
+	ItemGo* item = nullptr;
 
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
