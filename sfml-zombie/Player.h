@@ -44,7 +44,9 @@ protected:
 
 	// Ammo
 	int ammoUpgradeMount = 1;
-
+	int ammoMax = 0;
+	int currentAmmo = 0;
+	int remainAmmo = 0;
 
 public:
 	bool IsAlive() const { return hp > 0; }

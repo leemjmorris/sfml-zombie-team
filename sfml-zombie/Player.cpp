@@ -47,6 +47,10 @@ void Player::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 	//SetOrigin(Origins::MC);
+
+	ammoMax = 30;
+	currentAmmo = 6 * ammoUpgradeMount;
+	remainAmmo = ammoMax - currentAmmo;
 }
 
 void Player::Release()
@@ -82,6 +86,7 @@ void Player::Reset()
 
 	shootTimer = 0.f;
 	hp = maxHp;
+
 
 	// player upgrade at enter scene
 	Upgrade((UpgradeType)SCENE_MGR.GetPlayerUpgradeType());
@@ -124,7 +129,7 @@ void Player::Update(float dt)
 		shootTimer = 0.f;
 		Shoot();
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 	}
@@ -178,7 +183,7 @@ void Player::Upgrade(UpgradeType type)
 		shootInterval *= 0.5f;
 		break;
 	case Player::UpgradeType::ClipSize:
-
+		ammoUpgradeMount += 1;
 		break;
 	case Player::UpgradeType::MaxHP:
 		maxHp += 50;
