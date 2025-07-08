@@ -202,20 +202,18 @@ void SceneTitle::UpdateFadeEffect(float dt)
 void SceneTitle::ProcessFadeIn(float dt)
 {
 	fadeTimer += dt;
-
 	
 	float progress = fadeTimer / fadeDuration; //진행률 계산 (0.0 ~ 1.0)
 	if (progress > 1.0f) progress = 1.0f;
-
 	
-	fadeAlpha = 255.0f * (1.0f - progress); //255에서 0으로 선형 감소
+	fadeAlpha = 255.0f * (1.0f - progress); //255에서 0으로 감소
 
 	if (progress >= 1.0f)
 	{
 		fadeAlpha = 0.0f;
 		fadeIn = false;
 		fadeTimer = 0.0f;
-		std::cout << "Fade in complete!" << std::endl;
+		std::cout << "Fade in complete!" << std::endl; //디버깅용
 	}
 
 	UpdateFadeColor();
@@ -224,24 +222,21 @@ void SceneTitle::ProcessFadeIn(float dt)
 void SceneTitle::ProcessFadeOut(float dt)
 {
 	fadeTimer += dt;
-
 	
 	float progress = fadeTimer / fadeDuration; //진행률 계산 (0.0 ~ 1.0)
 	if (progress > 1.0f) progress = 1.0f;
-
 	
-	fadeAlpha = 255.0f * progress; //0에서 255로 선형 증가
+	fadeAlpha = 255.0f * progress; //0에서 255로 증가
 
-	std::cout << "Fade out - fadeAlpha: " << fadeAlpha << std::endl;
+	std::cout << "Fade out - fadeAlpha: " << fadeAlpha << std::endl; //디버깅용
 
 	if (progress >= 1.0f)
 	{
 		fadeAlpha = 255.0f;
 		fadeTimer = 0.0f;
-		std::cout << "Attempting to change scene to Game!" << std::endl;
+		std::cout << "Attempting to change scene to Game!" << std::endl; //디버깅용
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
-
 	UpdateFadeColor();
 }
 
@@ -265,7 +260,7 @@ void SceneTitle::HandleInput()
 {
 	if (!fadeIn && !fadeOut && InputMgr::AnyKeyDown())
 	{
-		std::cout << "Key pressed! Starting fade out..." << std::endl;
+		std::cout << "Key pressed! Starting fade out..." << std::endl; //디버깅용
 		fadeOut = true;
 		fadeTimer = 0.0f; //타이머 리셋 추가
 	}

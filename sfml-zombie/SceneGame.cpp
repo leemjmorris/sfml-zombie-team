@@ -24,7 +24,6 @@ void SceneGame::Init()
 
 	AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
-	userInterface = (UserInterface*)AddGameObject(new UserInterface());
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -33,17 +32,7 @@ void SceneGame::Init()
 		zombiePool.push_back(zombie);
 	}
 
-	if (userInterface)
-	{
-		AddGameObject(userInterface->GetScoreText());
-		AddGameObject(userInterface->GetHighScoreText());
-		AddGameObject(userInterface->GetAmmoText());
-		AddGameObject(userInterface->GetWaveCountText());
-		AddGameObject(userInterface->GetZombieCountText());
-
-		std::cout << "UI TextGo objects added to scene" << std::endl;
-	}
-
+	userInterface = (UserInterface*)AddGameObject(new UserInterface());
 
 	Scene::Init();
 }
@@ -91,8 +80,10 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 
+	// UI 업데이트
 	if (userInterface)
 	{
+		userInterface->SetScore(score);
 		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
 	}
 
