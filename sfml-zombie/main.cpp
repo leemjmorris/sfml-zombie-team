@@ -2,7 +2,7 @@
 
 int main()
 {
-    FRAMEWORK.Init(1280, 720, "Pong!!");
+    FRAMEWORK.Init(1280, 720, "Zombie Arena");
     FRAMEWORK.Do();
     FRAMEWORK.Release();
 

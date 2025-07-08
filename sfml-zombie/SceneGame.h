@@ -3,16 +3,20 @@
 
 class Player;
 class Zombie;
+class UserInterface;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
+	UserInterface* userInterface = nullptr;
 
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 
 	sf::Sprite cursor;
+
+	int score = 0;
 
 public:
 	SceneGame();

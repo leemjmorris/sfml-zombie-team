@@ -108,6 +108,18 @@ bool InputMgr::GetKey(sf::Keyboard::Key key)
 	return Contains(heldKeys, key);
 }
 
+bool InputMgr::AnyKeyDown()
+{
+	for (int i = 0; i < sf::Keyboard::KeyCount; ++i) //마우스 추가
+	{
+		if (GetKeyDown((sf::Keyboard::Key)i))
+		{
+			return true;
+		}
+	}	
+	return GetMouseButtonDown(sf::Mouse::Left) || GetMouseButtonDown(sf::Mouse::Right);
+}
+
 bool InputMgr::Contains(const std::list<int>& list, int key)
 {
 	return std::find(list.begin(), list.end(), key) != list.end();

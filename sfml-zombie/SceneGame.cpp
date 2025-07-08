@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "Zombie.h"
+#include "UserInterface.h"
 
 SceneGame::SceneGame() 
 	: Scene(SceneIds::Game)
@@ -18,9 +19,11 @@ void SceneGame::Init()
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/bullet.png");
+	fontIds.push_back("fonts/zombiecontrol.ttf");
 
 	AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
+	userInterface = (UserInterface*)AddGameObject(new UserInterface());
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -101,6 +104,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 
+	userInterface->SetScore(score);
 	window.setView(uiView);
 	window.draw(cursor);
 }

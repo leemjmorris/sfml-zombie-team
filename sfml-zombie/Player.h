@@ -13,6 +13,7 @@ protected:
 
 	sf::Vector2f direction;
 	sf::Vector2f look;
+	sf::Vector2f fireOffset;
 
 	float speed = 500.f;
 

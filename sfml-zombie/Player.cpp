@@ -46,6 +46,7 @@ void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
+	fireOffset = { 2.f, 1.1f }; //LMJ : Bullet Offset to make bullet fire from the gun.
 	//SetOrigin(Origins::MC);
 }
 
@@ -145,7 +146,11 @@ void Player::Shoot()
 	}
 
 	bullet->Reset();
-	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
+		
+	sf::Transform t; //LMJ : Changed bullet->Fire position. added FireOffset.
+	t.rotate(GetRotation());
+	sf::Vector2f worldFireOffset = t.transformPoint(fireOffset);
+	bullet->Fire(position + worldFireOffset * 10.f, look, 1000.f, 10);
 
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);

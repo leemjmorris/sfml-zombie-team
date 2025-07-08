@@ -69,7 +69,16 @@ void Zombie::Reset()
 void Zombie::Update(float dt)
 {
 	direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-	SetRotation(Utils::Angle(direction));
+
+	if (direction.x > 0.f) //LMJ: changed rotation to scale.
+	{
+		SetScale({1.f, 1.f});
+	}
+	else
+	{
+		SetScale({ -1.f, 1.f });
+	}
+
 	SetPosition(GetPosition() + direction * speed * dt);
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
