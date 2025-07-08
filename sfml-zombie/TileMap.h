@@ -29,5 +29,9 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	// Get function
+	sf::Vector2i GetCellCount() const{ return cellCount; }
+	sf::Vector2f GetCellSize() const{ return cellSize; }
 };
 

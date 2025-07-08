@@ -22,7 +22,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ammo_pickup.png");
 	texIds.push_back("graphics/health_pickup.png");
 
-	AddGameObject(new TileMap("TileMap"));
+	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
 
 	for (int i = 0; i < 100; ++i)
@@ -49,6 +49,8 @@ void SceneGame::Enter()
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
+
+	itemSpawnDistance = 400.f;
 
 	Scene::Enter();
 
@@ -132,4 +134,21 @@ void SceneGame::SpawnZombies(int count)
 		zombie->SetPosition(Utils::RandomInUnitCircle() * 500.f);
 		zombieList.push_back(zombie);
 	}
+}
+
+void SceneGame::SpawnItem()
+{
+	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
+	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
+	sf::FloatRect mapSize( {-widthSize * 0.5f, -heightSize * 0.5f}, { widthSize, heightSize });
+	sf::Vector2f spawnPos = player->GetPosition();
+	do
+	{
+		sf::Vector2f unitPos = Utils::RandomOnUnitCircle();
+		spawnPos = unitPos * itemSpawnDistance + player->GetPosition();
+	} while (spawnPos.x < mapSize.left + tileMap->GetCellSize().x ||
+		spawnPos.x > mapSize.left + mapSize.width - tileMap->GetCellSize().x ||
+		spawnPos.y < mapSize.top + tileMap->GetCellSize().y ||
+		spawnPos.y > mapSize.top + mapSize.height - tileMap->GetCellSize().y);
+	item->SetPosition(spawnPos);
 }

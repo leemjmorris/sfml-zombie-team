@@ -3,6 +3,7 @@
 #include "HitBox.h"
 
 class Player;
+class SceneGame;
 
 class ItemGo :
     public GameObject
@@ -20,6 +21,7 @@ protected:
 
 	HitBox hitBox;
 	Player* player;
+	SceneGame* sceneGame = nullptr;
 
 public:
 	ItemGo(const std::string& name = "");
@@ -38,5 +40,17 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	sf::FloatRect GetLocalBounds() const override
+	{
+		return item.getLocalBounds();
+	}
+
+	sf::FloatRect GetGlobalBounds() const override
+	{
+		return item.getGlobalBounds();
+	}
+
+	void Upgrade();
 };
 

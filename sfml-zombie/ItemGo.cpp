@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ItemGo.h"
 #include "Player.h"
+#include "SceneGame.h"
 
 ItemGo::ItemGo(const std::string& name)
 	: GameObject(name)
@@ -56,6 +57,7 @@ void ItemGo::Release()
 void ItemGo::Reset()
 {
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
+	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
 	item.setTexture(TEXTURE_MGR.Get(texId));
 	SetOrigin(Origins::MC);
@@ -76,7 +78,12 @@ void ItemGo::Update(float dt)
 		if (spawnTime > spawnInterval)
 		{
 			isSpawn = true;
-			SetPosition(player->GetPosition());
+			sceneGame->SpawnItem();
+			hitBox.UpdateTransform(item, GetLocalBounds());
+			if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+			{
+				Upgrade();
+			}
 			spawnTime = 0.f;
 		}
 	}
@@ -98,4 +105,8 @@ void ItemGo::Draw(sf::RenderWindow& window)
 		window.draw(item);
 		hitBox.Draw(window);
 	}
+}
+
+void ItemGo::Upgrade()
+{
 }
