@@ -148,12 +148,12 @@ void Zombie::SetType(Types type)
 		attackInterval = 1.f;
 		break;
 	}
-
 }
 
 void Zombie::OnDamage(int damage)
 {
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
+
 	if (hp == 0)
 	{
 		SetType(Types::Blood);

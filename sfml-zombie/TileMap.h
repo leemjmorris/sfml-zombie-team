@@ -11,8 +11,8 @@ protected:
 	sf::Vector2i cellCount;
 	sf::Vector2f cellSize;
 
-	int X = 12;
-	int Y = 15;
+	int X = 6;
+	int Y = 6;
 
 public:
 	TileMap(const std::string& name = "");

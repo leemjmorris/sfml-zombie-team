@@ -157,6 +157,7 @@ void Player::OnDamage(int damage)
 		return;
 
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
+
 	if (hp == 0)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);

@@ -160,6 +160,7 @@
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Variables.cpp" />
+    <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Variables.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
