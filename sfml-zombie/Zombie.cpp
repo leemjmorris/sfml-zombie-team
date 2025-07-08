@@ -45,6 +45,8 @@ void Zombie::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
+
+
 	SetType(type);
 }
 
@@ -64,23 +66,44 @@ void Zombie::Reset()
 
 	hp = maxHp;
 	attackTimer = 0.f;
+	bloodTimer = 0.f;
+	bloodTimerMax = 1.f;
 }
 
 void Zombie::Update(float dt)
 {
-	direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-	SetRotation(Utils::Angle(direction));
-	SetPosition(GetPosition() + direction * speed * dt);
-
-	hitBox.UpdateTransform(body, GetLocalBounds());
+	bloodTimer += dt;
+	
+	if (texId == "graphics/blood.png" && hp > 0)
+	{
+		if (bloodTimer > bloodTimerMax)
+		{
+			hp -= 1;
+			body.setColor(sf::Color(body.getColor().r, body.getColor().g, body.getColor().b, body.getColor().a * 0.9));
+			bloodTimer = 0.f;
+		}
+	}
+	else if (texId == "graphics/blood.png" && hp == 0)
+	{
+		SetActive(false);
+	}
 
 	attackTimer += dt;
-	if (attackTimer > attackInterval)
+	if (texId != "graphics/blood.png")
 	{
-		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
+		SetRotation(Utils::Angle(direction));
+		SetPosition(GetPosition() + direction * speed * dt);
+
+		hitBox.UpdateTransform(body, GetLocalBounds());
+
+		if (attackTimer > attackInterval)
 		{
-			attackTimer = 0.f;
-			player->OnDamage(damage);
+			if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+			{
+				attackTimer = 0.f;
+				player->OnDamage(damage);
+			}
 		}
 	}
 }
@@ -100,21 +123,28 @@ void Zombie::SetType(Types type)
 		texId = "graphics/bloater.png";
 		maxHp = 200;
 		speed = 50;
-		damage = 100.f;
+		damage = 30.f;
 		attackInterval = 1.f;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
 		speed = 100.f;
-		damage = 100.f;
+		damage = 25.f;
 		attackInterval = 1.f;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
 		speed = 200;
-		damage = 100.f;
+		damage = 20.f;
+		attackInterval = 1.f;
+		break;
+	case Types::Blood:
+		texId = "graphics/blood.png";
+		maxHp = 10;
+		speed = 0;
+		damage = 0.f;
 		attackInterval = 1.f;
 		break;
 	}
@@ -126,6 +156,9 @@ void Zombie::OnDamage(int damage)
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
 	if (hp == 0)
 	{
-		SetActive(false);
+		SetType(Types::Blood);
+		hp = maxHp;
+		body.setTexture(TEXTURE_MGR.Get("graphics/blood.png"), true);
+		sortingOrder = -1;
 	}
 }

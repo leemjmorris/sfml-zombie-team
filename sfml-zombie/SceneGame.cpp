@@ -18,6 +18,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/bullet.png");
+	texIds.push_back("graphics/blood.png");
 
 	AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
