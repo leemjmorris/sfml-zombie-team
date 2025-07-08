@@ -21,6 +21,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/blood.png");
 
 	AddGameObject(new TileMap("TileMap"));
+
 	player = (Player*)AddGameObject(new Player("Player"));
 
 	for (int i = 0; i < 100; ++i)

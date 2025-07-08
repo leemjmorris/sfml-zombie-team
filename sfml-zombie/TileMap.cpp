@@ -108,7 +108,7 @@ void TileMap::Init()
 	sortingLayer = SortingLayers::Background;
 	sortingOrder = 0;
 
-	Set({ 50, 50 }, {50.f, 50.f});
+	
 }
 
 void TileMap::Release()
@@ -119,6 +119,7 @@ void TileMap::Reset()
 {
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
 
+	Set({ X, Y }, { 50.f, 50.f });
 	SetOrigin(Origins::MC);
 	SetScale({ 1.f, 1.f });
 	SetPosition({ 0.f, 0.f });
