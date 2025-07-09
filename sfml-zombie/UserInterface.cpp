@@ -69,7 +69,7 @@ void UserInterface::Reset()
     SetupTextPositions();
     SetupHealthBar();
 
-    SetScore(0);
+
     SetHighScore(highScore);
     SetWaveCount(1);
 }
@@ -142,23 +142,19 @@ void UserInterface::CreateTextObjects()
 
     textScore->SetCharacterSize(36);
     textScore->SetFillColor(sf::Color::Yellow);
-    textScore->SetString("SCORE: 0");
+
 
     textHighScore->SetCharacterSize(36);
     textHighScore->SetFillColor(sf::Color::Cyan);
-    textHighScore->SetString("HIGH: 0");
 
     textAmmo->SetCharacterSize(32);
     textAmmo->SetFillColor(sf::Color::White);
-    textAmmo->SetString("0/0");
 
     textWaveCount->SetCharacterSize(32);
     textWaveCount->SetFillColor(sf::Color::Green);
-    textWaveCount->SetString("WAVE: 1");
 
     textZombieCount->SetCharacterSize(32);
     textZombieCount->SetFillColor(sf::Color::Red);
-    textZombieCount->SetString("ZOMBIES: 0");
 
     textScore->sortingLayer = SortingLayers::UI;
     textScore->sortingOrder = 10;

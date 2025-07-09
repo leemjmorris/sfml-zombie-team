@@ -7,6 +7,7 @@ class SceneGame;
 class Bullet : public GameObject
 {
 protected:
+
 	sf::Sprite body;
 	std::string texId = "graphics/bullet.png";
 

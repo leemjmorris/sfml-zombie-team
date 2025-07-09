@@ -220,8 +220,8 @@ void Zombie::SetType(Types type)
 	case Types::Boss:
 		texId = "graphics/boss.png";
 		maxHp = 100000000;
-		speed = 0.f;
-		damage = 100.f;
+		speed = 100.f;
+		damage = 99.f;
 		attackInterval = 0.f;
 		break;
 	case Types::Blood:
@@ -255,7 +255,7 @@ void Zombie::OnDamage(int damage)
 	
 	if (GetCurrentType() == "graphics/boss.png")
 	{
-		scoreValue += 15;
+		scoreValue = 15;
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 		if (sceneGame)
 		{

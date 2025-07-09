@@ -38,6 +38,8 @@ protected:
 	float attackTimer = 0.f;
 	float bloodTimer = 0.f;
 	float bloodTimerMax = 1.f;
+	
+	int bossScore = 0;
 
 	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
