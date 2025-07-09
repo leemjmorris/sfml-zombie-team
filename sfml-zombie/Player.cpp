@@ -134,7 +134,7 @@ void Player::Update(float dt)
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
-	// ÃÑ ÀåÀü ³Ö¾îº¸±â
+	// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾îº¸ï¿½ï¿½
 
 	shootTimer += dt;
 

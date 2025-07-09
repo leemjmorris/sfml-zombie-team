@@ -80,11 +80,11 @@ void SceneGame::Enter()
 	}
 	SpawnZombies(wave);
 
-	score = 0; //LMJ : Updated for the UI making
-	if (userInterface)
-	{
-		userInterface->SetScore(0);
-	}
+	//score = 0; //LMJ : Updated for the UI making
+	//if (userInterface)
+	//{
+	//	userInterface->SetScore(0);
+	//}
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -224,7 +224,6 @@ void SceneGame::AddScore(int points)
 {
 	score += points;
 
-	// UserInterface�� ���� ������Ʈ
 	if (userInterface)
 	{
 		userInterface->SetScore(score);

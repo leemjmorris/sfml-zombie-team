@@ -26,6 +26,7 @@ protected:
 	int wave;
 
 	int score = 0;
+	int currentScore = 0;
 
 	float itemSpawnDistance;
 	float zombieSpawnDistance;

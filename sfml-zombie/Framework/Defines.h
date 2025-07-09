@@ -23,7 +23,8 @@ enum class SceneIds
 	None = -1,
 	Title,
 	Game,
-	Upgrade,			// upgradescene
+	Upgrade, // upgradescene
+	GameOver,
 	Dev1,
 	Dev2,
 	Count,

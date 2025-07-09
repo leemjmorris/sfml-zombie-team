@@ -1,5 +1,8 @@
 #pragma once
 #include "GameObject.h"
+#include <string.h>
+#include <iostream>
+
 
 class Player;
 class TextGo;
@@ -8,41 +11,39 @@ class Zombie;
 class UserInterface : public GameObject
 {
 protected:
-    // UI ÅØ½ºÆ®µé (TextGo Æ÷ÀÎÅÍ·Î °ü¸®)
-    TextGo* textScore;         // ÇöÀç Á¡¼ö
-    TextGo* textHighScore;     // ÃÖ°í Á¡¼ö
-    TextGo* textAmmo;          // Åº¾à Á¤º¸ (ÇÕÃÄ¼­ Ç¥½Ã)
-    TextGo* textWaveCount;     // ÇöÀç Wave
-    TextGo* textZombieCount;   // ³²Àº Zombie ¼ö
+    // UI ï¿½Ø½ï¿½Æ®ï¿½ï¿½ (TextGo ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½)
+    TextGo* textScore;         // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    TextGo* textHighScore;     // ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½
+    TextGo* textAmmo;          // Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Ä¼ï¿½ Ç¥ï¿½ï¿½)
+    TextGo* textWaveCount;     // ï¿½ï¿½ï¿½ï¿½ Wave
+    TextGo* textZombieCount;   // ï¿½ï¿½ï¿½ï¿½ Zombie ï¿½ï¿½
 
-    // Ã¼·Â¹Ù °ü·Ã
-    sf::RectangleShape healthBarBackground;  // Ã¼·Â¹Ù ¹è°æ
-    sf::RectangleShape healthBarForeground;  // Ã¼·Â¹Ù Àü°æ
+    // Ã¼ï¿½Â¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+    sf::RectangleShape healthBarBackground;  // Ã¼ï¿½Â¹ï¿½ ï¿½ï¿½ï¿½
+    sf::RectangleShape healthBarForeground;  // Ã¼ï¿½Â¹ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    // Player ÂüÁ¶
+    // Player ï¿½ï¿½ï¿½ï¿½
     Player* player;
 
-    // ÃÖ°í Á¡¼ö °ü¸®
+    // ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     int highScore;
     std::string highScoreFilePath;
 
-    // Åº¾à Á¤º¸ ÀúÀå
-    int currentAmmo;    // ÇöÀç ÅºÃ¢ Åº¾à
-    int remainAmmo;     // ÀüÃ¼ Åº¾à
+    // Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    int currentAmmo;    // ï¿½ï¿½ï¿½ï¿½ ÅºÃ¢ Åºï¿½ï¿½
+    int remainAmmo;     // ï¿½ï¿½Ã¼ Åºï¿½ï¿½
 
-    // UI ¼³Á¤ ÇÔ¼öµé
-    void CreateTextObjects();   // TextGo °´Ã¼µé »ý¼º
+    // UI ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½
+    void CreateTextObjects();   // TextGo ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void SetupTextPositions();
     void SetupHealthBar();
     void UpdateHealthBar();
     void UpdateAmmoDisplay();
 
-    // ÃÖ°í Á¡¼ö ÆÄÀÏ °ü¸®
+    // ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void LoadHighScore();
     void SaveHighScore();
     void UpdateHighScore(int currentScore);
-
-    // Á»ºñ ¸¶¸®¼ö
     int remainZombie;
 
 public:
@@ -58,14 +59,15 @@ public:
     void Update(float dt) override;
     void Draw(sf::RenderWindow& window) override;
 
-    // µ¥ÀÌÅÍ ¼³Á¤ ÇÔ¼öµé
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½
     void SetScore(int score);
     void SetHighScore(int highScore);
     void SetCurrentAmmo(int currentAmmo);
     void SetRemainAmmo(int remainAmmo);
     void SetWaveCount(int waveCount);
+    void SetZombieCount(int zombieCount);
 
-    // TextGo °´Ã¼µé Á¢±Ù ÇÔ¼ö (SceneGame¿¡¼­ Scene¿¡ Ãß°¡ÇÏ±â À§ÇØ)
+    // TextGo ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ (SceneGameï¿½ï¿½ï¿½ï¿½ Sceneï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½)
     TextGo* GetScoreText() const { return textScore; }
     TextGo* GetHighScoreText() const { return textHighScore; }
     TextGo* GetAmmoText() const { return textAmmo; }

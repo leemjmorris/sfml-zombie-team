@@ -4,6 +4,7 @@
 #include "Zombie.h"
 #include "SceneMgr.h"
 #include "TextGo.h"
+#include "Zombie.h"
 #include <fstream>
 #include <iostream>
 
@@ -50,7 +51,7 @@ void UserInterface::Release()
 
 void UserInterface::Reset()
 {
-    // Player ÂüÁ¶ °¡Á®¿À±â
+    // Player ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
     {
         player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
@@ -66,27 +67,28 @@ void UserInterface::Reset()
     textWaveCount->Reset();
     textZombieCount->Reset();
 
-    // À§Ä¡ Àç¼³Á¤
+    // ï¿½ï¿½Ä¡ ï¿½ç¼³ï¿½ï¿½
     SetupTextPositions();
     SetupHealthBar();
 
-    // ÃÊ±â ÅØ½ºÆ® ¼³Á¤
+    // ï¿½Ê±ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     SetScore(0);
     SetHighScore(highScore);
     SetCurrentAmmo(0);
     SetRemainAmmo(0);
     SetWaveCount(1);
+    SetZombieCount(0);
 }
 
 void UserInterface::Update(float dt)
 {
-    // Game ¾À¿¡¼­¸¸ ¾÷µ¥ÀÌÆ®
+    // Game ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     if (SCENE_MGR.GetCurrentSceneId() != SceneIds::Game)
         return;
 
     UpdateHealthBar();
 
-    // TextGo °´Ã¼µéµµ ¾÷µ¥ÀÌÆ®
+    // TextGo ï¿½ï¿½Ã¼ï¿½éµµ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     if (textScore) textScore->Update(dt);
     if (textHighScore) textHighScore->Update(dt);
     if (textAmmo) textAmmo->Update(dt);
@@ -96,11 +98,11 @@ void UserInterface::Update(float dt)
 
 void UserInterface::Draw(sf::RenderWindow& window)
 {
-    // Game ¾À¿¡¼­¸¸ ±×¸®±â
+    // Game ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
     if (SCENE_MGR.GetCurrentSceneId() != SceneIds::Game)
         return;
 
-    // UI View ¼³Á¤
+    // UI View ï¿½ï¿½ï¿½ï¿½
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::View view = FRAMEWORK.GetWindow().getView();
     //sf::View uiView;
@@ -108,14 +110,14 @@ void UserInterface::Draw(sf::RenderWindow& window)
     uiView.setCenter(windowSize * 0.5f);*/
     window.setView(view);
 
-    // ¸ðµç TextGo Á÷Á¢ ±×¸®±â
+    // ï¿½ï¿½ï¿½ TextGo ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
     if (textScore) textScore->Draw(window);
     if (textHighScore) textHighScore->Draw(window);
     if (textAmmo) textAmmo->Draw(window);
     if (textWaveCount) textWaveCount->Draw(window);
     if (textZombieCount) textZombieCount->Draw(window);
 
-    // Ã¼·Â¹Ù¸¸ Á÷Á¢ ±×¸®±â (TextGoµéÀº Scene¿¡¼­ ÀÚµ¿À¸·Î ±×·ÁÁü)
+    // Ã¼ï¿½Â¹Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ (TextGoï¿½ï¿½ï¿½ï¿½ Sceneï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½)
     window.draw(healthBarBackground);
     window.draw(healthBarForeground);
 }
@@ -129,7 +131,7 @@ void UserInterface::CreateTextObjects()
     textWaveCount = new TextGo("fonts/zombiecontrol.ttf", "UI_Wave");
     textZombieCount = new TextGo("fonts/zombiecontrol.ttf", "UI_Zombie");
 
-    // ÅØ½ºÆ® ±âº» ¼³Á¤
+    // ï¿½Ø½ï¿½Æ® ï¿½âº» ï¿½ï¿½ï¿½ï¿½
     textScore->SetCharacterSize(36);
     textScore->SetFillColor(sf::Color::Yellow);
     textScore->SetString("SCORE: 0");
@@ -150,7 +152,7 @@ void UserInterface::CreateTextObjects()
     textZombieCount->SetFillColor(sf::Color::Red);
     textZombieCount->SetString("ZOMBIES: 0");
 
-    // ¸ðµç TextGo¸¦ UI ·¹ÀÌ¾î·Î ¼³Á¤
+    // ï¿½ï¿½ï¿½ TextGoï¿½ï¿½ UI ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     textScore->sortingLayer = SortingLayers::UI;
     textScore->sortingOrder = 10;
 
@@ -174,19 +176,19 @@ void UserInterface::SetupTextPositions()
 
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-    // ÁÂÃø »ó´Ü: ÇöÀç Á¡¼ö (10, 10)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (10, 10)
     textScore->SetPosition(sf::Vector2f(10.0f, 10.0f));
 
-    // ¿ìÃø »ó´Ü: ÃÖ°í Á¡¼ö (ÀÓ½Ã À§Ä¡, SetHighScore¿¡¼­ Á¤È®È÷ Á¶Á¤)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½: ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ó½ï¿½ ï¿½ï¿½Ä¡, SetHighScoreï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - 200.0f, 10.0f));
 
-    // ÁÂÃø ÇÏ´Ü: Åº¾à Á¤º¸
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½: Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     textAmmo->SetPosition(sf::Vector2f(10.0f, windowSize.y - 80.0f));
 
-    // ¿ìÃø ÇÏ´Ü: Wave Á¤º¸ (ÀÓ½Ã À§Ä¡, SetWaveCount¿¡¼­ Á¤È®È÷ Á¶Á¤)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½: Wave ï¿½ï¿½ï¿½ï¿½ (ï¿½Ó½ï¿½ ï¿½ï¿½Ä¡, SetWaveCountï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - 150.0f, windowSize.y - 80.0f));
 
-    // Wave ¿·: Zombie ¼ö (ÀÓ½Ã À§Ä¡, SetZombieCount¿¡¼­ Á¤È®È÷ Á¶Á¤)
+    // Wave ï¿½ï¿½: Zombie ï¿½ï¿½ (ï¿½Ó½ï¿½ ï¿½ï¿½Ä¡, SetZombieCountï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     textZombieCount->SetPosition(sf::Vector2f(windowSize.x - 300.0f, windowSize.y - 40.0f));
 }
 
@@ -194,18 +196,18 @@ void UserInterface::SetupHealthBar()
 {
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-    // Ã¼·Â¹Ù Å©±â ¹× À§Ä¡ (Åº¾à Á¤º¸ ¹Ù·Î À§)
+    // Ã¼ï¿½Â¹ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ (Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½)
     sf::Vector2f healthBarSize(200.0f, 20.0f);
     sf::Vector2f healthBarPos(10.0f, windowSize.y - 110.0f);
 
-    // ¹è°æ (°ËÀº»ö)
+    // ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
     healthBarBackground.setSize(healthBarSize);
     healthBarBackground.setPosition(healthBarPos);
     healthBarBackground.setFillColor(sf::Color::Black);
     healthBarBackground.setOutlineThickness(2.0f);
     healthBarBackground.setOutlineColor(sf::Color::White);
 
-    // Àü°æ (ÃÊ·Ï»ö)
+    // ï¿½ï¿½ï¿½ï¿½ (ï¿½Ê·Ï»ï¿½)
     healthBarForeground.setSize(healthBarSize);
     healthBarForeground.setPosition(healthBarPos);
     healthBarForeground.setFillColor(sf::Color::Green);
@@ -216,22 +218,22 @@ void UserInterface::UpdateHealthBar()
     if (!player)
         return;
 
-    // Player Å¬·¡½ºÀÇ GetHp()¿Í GetMaxHp() ¸Þ¼­µå »ç¿ë
+    // Player Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GetHp()ï¿½ï¿½ GetMaxHp() ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     float currentHp = static_cast<float>(player->GetHp());
     float maxHp = static_cast<float>(player->GetMaxHp());
 
     if (maxHp <= 0.0f) return;
 
-    // Ã¼·Â ºñÀ² °è»ê
+    // Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     float healthRatio = currentHp / maxHp;
     healthRatio = std::max(0.0f, std::min(1.0f, healthRatio));
 
-    // Ã¼·Â¹Ù Å©±â Á¶Á¤
+    // Ã¼ï¿½Â¹ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     sf::Vector2f fullSize = healthBarBackground.getSize();
     sf::Vector2f currentSize(fullSize.x * healthRatio, fullSize.y);
     healthBarForeground.setSize(currentSize);
 
-    // Ã¼·Â¿¡ µû¸¥ »ö»ó º¯°æ
+    // Ã¼ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (healthRatio > 0.6f)
         healthBarForeground.setFillColor(sf::Color::Green);
     else if (healthRatio > 0.3f)
@@ -281,7 +283,7 @@ void UserInterface::SetScore(int score)
 
     textScore->SetString("SCORE: " + std::to_string(score));
 
-    // »õ·Î¿î Á¡¼ö°¡ ÃÖ°í Á¡¼ö¸¦ ³Ñ´ÂÁö È®ÀÎ
+    // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     UpdateHighScore(score);
 }
 
@@ -291,7 +293,7 @@ void UserInterface::SetHighScore(int highScore)
 
     textHighScore->SetString("HIGH: " + std::to_string(highScore));
 
-    // ¿ìÃø Á¤·ÄÀ» À§ÇØ À§Ä¡ ÀçÁ¶Á¤
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textHighScore->GetLocalBounds();
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, 10.0f));
@@ -314,7 +316,7 @@ void UserInterface::UpdateAmmoDisplay()
 {
     if (!textAmmo) return;
 
-    // "6/24" ÇüÅÂ·Î Ç¥½Ã
+    // "6/24" ï¿½ï¿½ï¿½Â·ï¿½ Ç¥ï¿½ï¿½
     textAmmo->SetString(std::to_string(currentAmmo) + "/" + std::to_string(remainAmmo));
 }
 
@@ -324,7 +326,7 @@ void UserInterface::SetWaveCount(int waveCount)
 
     textWaveCount->SetString("WAVE: " + std::to_string(waveCount));
 
-    // ¿ìÃø Á¤·ÄÀ» À§ÇØ À§Ä¡ ÀçÁ¶Á¤
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textWaveCount->GetLocalBounds();
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 30.0f, windowSize.y - 80.0f));
@@ -346,7 +348,6 @@ void UserInterface::SetZombieCount(const std::list<Zombie*>& zombieList)
 
     textZombieCount->SetString("ZOMBIES: " + std::to_string(remainZombie));
 
-    // Wave ÅØ½ºÆ® ¿·¿¡ À§Ä¡ Á¶Á¤
     if (textWaveCount)
     {
         sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
