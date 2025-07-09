@@ -22,6 +22,7 @@ protected:
 	float coolTime[(int)SkillType::skillCount];
 
 	float dashAmount = 600.f;
+	float fastShootAmount = 10.f;
 
 	bool CanUse[(int)SkillType::skillCount];
 
@@ -44,7 +45,7 @@ public:
 	bool IsCoolTime(float t, SkillType ty);
 
 	void Dash();
-	void FastShoot(float t);
+	void FastShoot();
 
 	void FinishSkill(SkillType ty);
 };

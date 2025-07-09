@@ -174,12 +174,23 @@ void Player::Update(float dt)
 		}
 	}
 
+	Skill::SkillType useType = Skill::SkillType::None;
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		if (skill.GetCanUse(Skill::SkillType::Dash) && !skill.IsCoolTime(skillTimer[(int)Skill::SkillType::Dash], Skill::SkillType::Dash))
+		useType = Skill::SkillType::Dash;
+		
+	}
+	else if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
+	{
+		useType = Skill::SkillType::FastShoot;
+	}
+	if(useType != Skill::SkillType::None)
+	{
+		std::cout << (int)useType << std::endl;
+		if (skill.GetCanUse(useType) && !skill.IsCoolTime(skillTimer[(int)useType], useType))
 		{
-			skill.Use(Skill::SkillType::Dash);
-			skillTimer[(int)Skill::SkillType::Dash] = 0.f;
+			skill.Use(useType);
+			skillTimer[(int)useType] = 0.f;
 		}
 	}
 }

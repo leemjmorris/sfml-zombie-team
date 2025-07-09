@@ -11,8 +11,8 @@ Skill::Skill(SkillType ty)
 	}
 	skillUsingTime[(int)SkillType::Dash] = 0.1f;
 	coolTime[(int)SkillType::Dash] = 10.f;
-	skillUsingTime[(int)SkillType::FastShoot] = 0.5f;
-	coolTime[(int)SkillType::FastShoot] = 20.f;
+	skillUsingTime[(int)SkillType::FastShoot] = 1.5f;
+	coolTime[(int)SkillType::FastShoot] = 5.f;
 }
 
 void Skill::Use(SkillType ty)
@@ -23,7 +23,7 @@ void Skill::Use(SkillType ty)
 		Dash();
 		break;
 	case Skill::SkillType::FastShoot:
-		Dash();
+		FastShoot();
 		break;
 	default:
 		break;
@@ -44,10 +44,11 @@ void Skill::Dash()
 	}
 }
 
-void Skill::FastShoot(float t)
+void Skill::FastShoot()
 {
 	if (CanUse[(int)SkillType::FastShoot])
 	{
+		player->SetShootInterval(player->GetShootInterval() / fastShootAmount);
 		CanUse[(int)SkillType::FastShoot] = false;
 	}
 }
@@ -58,11 +59,12 @@ void Skill::FinishSkill(SkillType ty)
 	{
 	case Skill::SkillType::Dash:
 		player->SetSpeed(player->GetSpeed() - dashAmount);
-		CanUse[(int)ty] = true;
 		break;
 	case Skill::SkillType::FastShoot:
+		player->SetShootInterval(player->GetShootInterval() * fastShootAmount);
 		break;
 	default:
 		break;
 	}
+	CanUse[(int)ty] = true;
 }

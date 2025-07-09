@@ -103,8 +103,12 @@ public:
 	void AddHp(int hp) { this->hp = Utils::Clamp(this->hp + hp, 0, this->maxHp); }
 	void AddAmmo(int ammo) { this->remainAmmo += ammo; }
 	int GetCurrentAmmo() { return currentAmmo; }
+	void SetCurrentAmmo(int ammo) { currentAmmo = ammo; }
 	int GetRemainAmmo() { return remainAmmo; }
+
 	void SetSpeed(float sp) { speed = sp; }
 	float GetSpeed() const { return speed; }
+	void SetShootInterval(float si) { shootInterval = si; }
+	float GetShootInterval() const { return shootInterval; }
 };
 
