@@ -88,6 +88,9 @@ void Zombie::Update(float dt)
 	}
 	else if (texId == "graphics/blood.png" && hp == 0)
 	{
+		sf::Color currentColor = body.getColor();
+		body.setColor(sf::Color(currentColor.r, currentColor.g, currentColor.b,
+			255));
 		SetActive(false);
 		return; // 비활성화된 좀비는 더 이상 처리하지 않음
 	}

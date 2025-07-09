@@ -40,6 +40,8 @@ protected:
 	Player* player = nullptr;
 
 	HitBox hitBox;
+	
+	sf::Color OriginColor;
 
 public:
 	Zombie(const std::string& name = "");
