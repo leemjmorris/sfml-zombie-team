@@ -50,10 +50,8 @@ void Player::Init()
 	sortingOrder = 0;
 	fireOffset = { 2.f, 1.1f }; //LMJ : Bullet Offset to make bullet fire from the gun.
 	//SetOrigin(Origins::MC);
-
-	ammoMax = 30;
 	currentAmmo = 6 * ammoUpgradeMount;
-	remainAmmo = ammoMax - currentAmmo;
+	remainAmmo = 30;
 }
 
 void Player::Release()
@@ -136,17 +134,35 @@ void Player::Update(float dt)
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
+	// 총 장전 넣어보기
 
 	shootTimer += dt;
-	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval)
+
+	if (currentAmmo > 0)
 	{
-		shootTimer = 0.f;
-		Shoot();
+		if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval)
+		{
+			shootTimer = 0.f;
+			Shoot();
+			currentAmmo--;
+		}
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
+	else if (remainAmmo == 0)
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
+		if (InputMgr::GetKeyDown(sf::Keyboard::R))
+		{
+			currentAmmo = 0;
+		}
 	}
+	else if (currentAmmo == 0)
+	{
+		if (InputMgr::GetKeyDown(sf::Keyboard::R))
+		{
+			currentAmmo = 6 * ammoUpgradeMount;
+			remainAmmo -= currentAmmo;
+		}
+	}
+	
 }
 
 void Player::Draw(sf::RenderWindow& window)

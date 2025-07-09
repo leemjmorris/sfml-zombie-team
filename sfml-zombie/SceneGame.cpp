@@ -112,7 +112,7 @@ void SceneGame::Update(float dt)
 	if (userInterface)
 	{
 		userInterface->SetScore(score);
-		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
+		userInterface->SetZombieCount(zombieList);
 	}
 
 	auto it = zombieList.begin();
@@ -139,9 +139,13 @@ void SceneGame::Update(float dt)
 	if (userInterface)
 	{
 		userInterface->SetScore(score);
-		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
+		userInterface->SetZombieCount(zombieList);
 	}
 
+	if (userInterface->GetRemainZombie() == 0)
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
+	}
 	//userInterface->SetScore(score);
 	////userInterface->SetWaveCount(currentWave); LMJ: Will Add this when Wave is merged together.
 	//userInterface->SetZombieCount(zombieList.size());

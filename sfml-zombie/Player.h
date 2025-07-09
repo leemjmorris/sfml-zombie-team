@@ -52,7 +52,6 @@ protected:
 
 	// Ammo
 	int ammoUpgradeMount = 1;
-	int ammoMax = 0;
 	int currentAmmo = 0;
 	int remainAmmo = 0;
 

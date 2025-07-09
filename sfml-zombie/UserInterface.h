@@ -3,6 +3,7 @@
 
 class Player;
 class TextGo;
+class Zombie;
 
 class UserInterface : public GameObject
 {
@@ -41,6 +42,9 @@ protected:
     void SaveHighScore();
     void UpdateHighScore(int currentScore);
 
+    // 좀비 마리수
+    int remainZombie;
+
 public:
     UserInterface();
     ~UserInterface() override;
@@ -60,7 +64,6 @@ public:
     void SetCurrentAmmo(int currentAmmo);
     void SetRemainAmmo(int remainAmmo);
     void SetWaveCount(int waveCount);
-    void SetZombieCount(int zombieCount);
 
     // TextGo 객체들 접근 함수 (SceneGame에서 Scene에 추가하기 위해)
     TextGo* GetScoreText() const { return textScore; }
@@ -68,4 +71,8 @@ public:
     TextGo* GetAmmoText() const { return textAmmo; }
     TextGo* GetWaveCountText() const { return textWaveCount; }
     TextGo* GetZombieCountText() const { return textZombieCount; }
+
+
+    void SetZombieCount(const std::list<Zombie*>& zombieList);
+    int GetRemainZombie() { return remainZombie; }
 };

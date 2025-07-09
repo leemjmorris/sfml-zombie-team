@@ -79,5 +79,7 @@ public:
 	}
 
 	void OnDamage(int damage);
+
+	Types GetType() const { return type; }
 };
 
