@@ -296,6 +296,7 @@ void UserInterface::SetHighScore(int highScore)
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textHighScore->GetLocalBounds();
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, 10.0f));
+    textHighScore->SetOrigin(Origins::TR);
 }
 
 void UserInterface::SetCurrentAmmo(int currentAmmo)
@@ -328,6 +329,7 @@ void UserInterface::SetWaveCount(int waveCount)
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textWaveCount->GetLocalBounds();
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, windowSize.y - 80.0f));
+    textWaveCount->SetOrigin(Origins::TR);
 }
 
 void UserInterface::SetZombieCount(int zombieCount)
@@ -343,5 +345,6 @@ void UserInterface::SetZombieCount(int zombieCount)
         sf::FloatRect waveBounds = textWaveCount->GetLocalBounds();
         sf::FloatRect zombieBounds = textZombieCount->GetLocalBounds();
         textZombieCount->SetPosition(sf::Vector2f(windowSize.x - waveBounds.width - zombieBounds.width - 30.0f, windowSize.y - 40.0f));
+        textZombieCount->SetOrigin(Origins::TR);
     }
 }
