@@ -48,14 +48,13 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
+	Scene::Enter();
+
 	score = 0; //LMJ : Updated for the UI making
 	if (userInterface)
 	{
-		userInterface->SetScore(score);
+		userInterface->SetScore(0);
 	}
-
-	Scene::Enter();
-
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -128,7 +127,9 @@ void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 
+	window.setView(uiView);
 	userInterface->SetScore(score);
+
 	window.setView(uiView);
 	window.draw(cursor);
 

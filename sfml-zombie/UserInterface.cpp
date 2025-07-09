@@ -58,7 +58,11 @@ void UserInterface::Reset()
     {
         player = nullptr;
     }
-
+    textScore->Reset();
+    textHighScore->Reset();
+    textAmmo->Reset();
+    textWaveCount->Reset();
+    textZombieCount->Reset();
     // 위치 재설정
     SetupTextPositions();
     SetupHealthBar();
@@ -71,11 +75,7 @@ void UserInterface::Reset()
     SetWaveCount(1);
     SetZombieCount(0);
 
-    textScore->Reset();
-    textHighScore->Reset();
-    textAmmo->Reset();
-    textWaveCount->Reset();
-    textZombieCount->Reset();
+
 }
 
 void UserInterface::Update(float dt)
