@@ -65,9 +65,6 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	itemSpawnDistance = 400.f;
-
-
 	Scene::Enter();
 	if (wave == 20)
 	{
