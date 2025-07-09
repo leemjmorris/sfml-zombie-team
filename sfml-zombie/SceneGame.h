@@ -14,6 +14,8 @@ protected:
 
 	sf::Sprite cursor;
 
+	int wave;
+
 public:
 	SceneGame();
 	~SceneGame() override = default;

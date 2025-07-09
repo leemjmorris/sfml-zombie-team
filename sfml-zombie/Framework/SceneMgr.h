@@ -13,6 +13,7 @@ protected:
 	SceneIds currentScene = SceneIds::None;
 	SceneIds nextScene = SceneIds::None;
 
+
 public:
 	void Init();
 	void Release();
@@ -23,6 +24,7 @@ public:
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+
 };
 
 #define SCENE_MGR (SceneMgr::Instance())

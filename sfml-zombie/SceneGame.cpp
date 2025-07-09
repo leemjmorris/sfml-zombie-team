@@ -32,6 +32,7 @@ void SceneGame::Init()
 	}
 
 	Scene::Init();
+	wave = 0;
 }
 
 void SceneGame::Enter()
@@ -47,7 +48,15 @@ void SceneGame::Enter()
 	uiView.setCenter(windowSize * 0.5f);
 
 	Scene::Enter();
-
+	if (wave == 20)
+	{
+		wave = 0;
+	}
+	else if (wave < 20)
+	{
+		wave += 5;
+	}
+	SpawnZombies(wave);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -87,11 +96,6 @@ void SceneGame::Update(float dt)
 	}
 
 	worldView.setCenter(player->GetPosition());
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SpawnZombies(10);
-	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 	{

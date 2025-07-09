@@ -63,6 +63,10 @@ void Zombie::Reset()
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
+	if (texId != "graphics/blood.png")
+	{
+		
+	}
 
 	hp = maxHp;
 	attackTimer = 0.f;

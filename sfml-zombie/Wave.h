@@ -1,11 +1,16 @@
 #pragma once
-class Wave
+#include "Scene.h"
+class Wave : public Scene
 {
 protected:
 
 public:
 	Wave();
-	virtual ~Wave() = default;
+	~Wave() = default;
 
+	void Init() override;
+	void Enter() override;
+
+	void Update(float dt) override;
 };
 
