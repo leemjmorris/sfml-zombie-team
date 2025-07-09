@@ -64,8 +64,8 @@ void Player::Reset()
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 		tileMap = (TileMap*)sceneGame->FindGameObject("TileMap");
-		healItem = (ItemGo*)sceneGame->FindGameObject("AmmoPack");
-		ammoItem = (ItemGo*)sceneGame->FindGameObject("HealPack");
+		healItem = (ItemGo*)sceneGame->FindGameObject("HealPack");
+		ammoItem = (ItemGo*)sceneGame->FindGameObject("AmmoPack");
 	}
 	else
 	{

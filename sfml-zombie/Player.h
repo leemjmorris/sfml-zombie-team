@@ -48,8 +48,6 @@ protected:
 	int hp = 0;
 	int maxHp = 100;
 
-
-
 	// Ammo
 	int ammoUpgradeMount = 1;
 	int currentAmmo = 0;
@@ -102,5 +100,7 @@ public:
 	void AddAmmo(int ammo) { this->remainAmmo += ammo; }
 	int GetCurrentAmmo() { return currentAmmo; }
 	int GetRemainAmmo() { return remainAmmo; }
+	void SetSpeed(float sp) { speed = sp; }
+	float GetSpeed() const { return speed; }
 };
 
