@@ -3,12 +3,14 @@
 #include "SceneDev1.h"
 #include "SceneDev2.h"
 #include "SceneGame.h"
+#include "SceneUpgrade.h"
 #include "SceneTitle.h"
 
 void SceneMgr::Init()
 {
 	scenes.insert({ SceneIds::Title, new SceneTitle()});
 	scenes.insert({ SceneIds::Game, new SceneGame() });
+	scenes.insert({ SceneIds::Upgrade, new SceneUpgrade() });
 	scenes.insert({ SceneIds::Dev1, new SceneDev1() });
 	scenes.insert({ SceneIds::Dev2, new SceneDev2() });
 

@@ -13,6 +13,8 @@ protected:
 	SceneIds currentScene = SceneIds::None;
 	SceneIds nextScene = SceneIds::None;
 
+	int playerUpgrade = -1;
+
 public:
 	void Init();
 	void Release();
@@ -23,6 +25,9 @@ public:
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+
+	int GetPlayerUpgradeType() const { return playerUpgrade; }
+	void SetPlayerUpgradeType(int ty){ playerUpgrade = ty; }
 };
 
 #define SCENE_MGR (SceneMgr::Instance())

@@ -4,12 +4,17 @@
 class Player;
 class Zombie;
 class UserInterface;
+class ItemGo;
+class TileMap;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
 	UserInterface* userInterface = nullptr;
+	ItemGo* item = nullptr;
+	ItemGo* item2 = nullptr;
+	TileMap* tileMap = nullptr;
 
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
@@ -17,6 +22,8 @@ protected:
 	sf::Sprite cursor;
 
 	int score = 0;
+
+	float itemSpawnDistance;
 
 public:
 	SceneGame();
@@ -32,6 +39,7 @@ public:
 	int GetScore() const { return score; }
 
 	void SpawnZombies(int count);
+	void SpawnItem(ItemGo* item);
 
 	const std::list<Zombie*>& GetZombies() const 
 	{

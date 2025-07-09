@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "Zombie.h"
+#include "ItemGo.h"
 #include "UserInterface.h"
 #include "TextGo.h"
 
@@ -20,9 +21,11 @@ void SceneGame::Init()
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/bullet.png");
+	texIds.push_back("graphics/ammo_pickup.png");
+	texIds.push_back("graphics/health_pickup.png");
 	fontIds.push_back("fonts/zombiecontrol.ttf");
 
-	AddGameObject(new TileMap("TileMap"));
+	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
 
 	for (int i = 0; i < 100; ++i)
@@ -31,6 +34,13 @@ void SceneGame::Init()
 		zombie->SetActive(false);
 		zombiePool.push_back(zombie);
 	}
+
+	item = (ItemGo*)AddGameObject(new ItemGo("ammopack"));
+	item->SetTexId("graphics/ammo_pickup.png");
+	item->SetType(ItemGo::UpgradeType::Ammo);
+	item2 = (ItemGo*)AddGameObject(new ItemGo("healpack"));
+	item2->SetTexId("graphics/health_pickup.png");
+	item2->SetType(ItemGo::UpgradeType::Heal);
 
 	userInterface = (UserInterface*)AddGameObject(new UserInterface());
 
@@ -47,6 +57,8 @@ void SceneGame::Enter()
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
+
+	itemSpawnDistance = 400.f;
 
 	Scene::Enter();
 
@@ -79,7 +91,7 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 
-	// UI ¾÷µ¥ÀÌÆ®
+	// UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	if (userInterface)
 	{
 		userInterface->SetScore(score);
@@ -162,11 +174,28 @@ void SceneGame::SpawnZombies(int count)
 	}
 }
 
+void SceneGame::SpawnItem(ItemGo* item)
+{
+	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
+	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
+	sf::FloatRect mapSize( {-widthSize * 0.5f, -heightSize * 0.5f}, { widthSize, heightSize });
+	sf::Vector2f spawnPos = player->GetPosition();
+	do
+	{
+		sf::Vector2f unitPos = Utils::RandomOnUnitCircle();
+		spawnPos = unitPos * itemSpawnDistance + player->GetPosition();
+	} while (spawnPos.x < mapSize.left + tileMap->GetCellSize().x ||
+		spawnPos.x > mapSize.left + mapSize.width - tileMap->GetCellSize().x ||
+		spawnPos.y < mapSize.top + tileMap->GetCellSize().y ||
+		spawnPos.y > mapSize.top + mapSize.height - tileMap->GetCellSize().y);
+	item->SetPosition(spawnPos);
+}
+
 void SceneGame::AddScore(int points)
 {
 	score += points;
 
-	// UserInterface¿¡ Á¡¼ö ¾÷µ¥ÀÌÆ®
+	// UserInterfaceï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	if (userInterface)
 	{
 		userInterface->SetScore(score);

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "TileMap.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -48,6 +49,10 @@ void Player::Init()
 	sortingOrder = 0;
 	fireOffset = { 2.f, 1.1f }; //LMJ : Bullet Offset to make bullet fire from the gun.
 	//SetOrigin(Origins::MC);
+
+	ammoMax = 30;
+	currentAmmo = 6 * ammoUpgradeMount;
+	remainAmmo = ammoMax - currentAmmo;
 }
 
 void Player::Release()
@@ -59,6 +64,7 @@ void Player::Reset()
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		tileMap = (TileMap*)sceneGame->FindGameObject("TileMap");
 	}
 	else
 	{
@@ -83,6 +89,10 @@ void Player::Reset()
 
 	shootTimer = 0.f;
 	hp = maxHp;
+
+
+	// player upgrade at enter scene
+	Upgrade((UpgradeType)SCENE_MGR.GetPlayerUpgradeType());
 }
 
 void Player::Update(float dt)
@@ -109,6 +119,15 @@ void Player::Update(float dt)
 	}
 	SetPosition(position + direction * speed * dt);
 
+	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
+	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
+	sf::FloatRect mapSize({ -widthSize * 0.5f, -heightSize * 0.5f }, { widthSize, heightSize });
+	sf::Vector2f pos = GetPosition();
+	std::cout << pos.x << "," << pos.y << std::endl;
+	pos.x = Utils::Clamp(pos.x, mapSize.left + tileMap->GetCellSize().x, mapSize.left + widthSize - tileMap->GetCellSize().x);
+	pos.y = Utils::Clamp(pos.y, mapSize.top + tileMap->GetCellSize().y, mapSize.top + heightSize - tileMap->GetCellSize().y);
+	SetPosition(pos);
+
 	sf::Vector2i mousePos = InputMgr::GetMousePosition();
 	sf::Vector2f mouseWorldPos = sceneGame->ScreenToWorld(mousePos);
 	look = Utils::GetNormal(mouseWorldPos - GetPosition());
@@ -121,6 +140,10 @@ void Player::Update(float dt)
 	{
 		shootTimer = 0.f;
 		Shoot();
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 	}
 }
 
@@ -165,5 +188,32 @@ void Player::OnDamage(int damage)
 	if (hp == 0)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
+}
+
+void Player::Upgrade(UpgradeType type)
+{
+	switch (type)
+	{
+	case Player::UpgradeType::FireRate:
+		shootInterval *= 0.5f;
+		break;
+	case Player::UpgradeType::ClipSize:
+		ammoUpgradeMount += 1;
+		break;
+	case Player::UpgradeType::MaxHP:
+		maxHp += 50;
+		break;
+	case Player::UpgradeType::Speed:
+		speed *= 3.f;
+		break;
+	case Player::UpgradeType::HealthPickUp:
+
+		break;
+	case Player::UpgradeType::AmmoPickUp:
+
+		break;
+	default:
+		break;
 	}
 }
