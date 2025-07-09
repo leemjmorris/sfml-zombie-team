@@ -163,6 +163,7 @@
     <ClCompile Include="Framework\TextGo.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="Turret.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Variables.cpp" />
     <ClCompile Include="Zombie.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Turret.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Variables.h" />
     <ClInclude Include="Zombie.h" />

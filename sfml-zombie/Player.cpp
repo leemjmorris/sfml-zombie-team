@@ -145,10 +145,6 @@ void Player::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 	}
-
-	std::cout << hp << std::endl;
-	std::cout << currentAmmo << std::endl;
-	std::cout << remainAmmo << std::endl;
 }
 
 void Player::Draw(sf::RenderWindow& window)

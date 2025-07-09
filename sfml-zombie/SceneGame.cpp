@@ -6,6 +6,7 @@
 #include "ItemGo.h"
 #include "UserInterface.h"
 #include "TextGo.h"
+#include "Turret.h"
 
 SceneGame::SceneGame() 
 	: Scene(SceneIds::Game)
@@ -23,11 +24,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/ammo_pickup.png");
 	texIds.push_back("graphics/health_pickup.png");
+	texIds.push_back("graphics/turret.png");
 	fontIds.push_back("fonts/zombiecontrol.ttf");
 	texIds.push_back("graphics/blood.png");
 
 	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
+	turret = (Turret*)AddGameObject(new Turret("Turret"));
 
 	for (int i = 0; i < 100; ++i)
 	{
