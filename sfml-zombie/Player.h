@@ -5,6 +5,7 @@
 class SceneGame;
 class Bullet;
 class TileMap;
+class ItemGo;
 
 class Player : public GameObject
 {
@@ -33,13 +34,15 @@ protected:
 
 	SceneGame* sceneGame = nullptr;
 	TileMap* tileMap = nullptr;
+	ItemGo* healItem = nullptr;
+	ItemGo* ammoItem = nullptr;
 
 	HitBox hitBox;
 
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
 
-	float shootInterval = 2.f;
+	float shootInterval = 1.f;
 	float shootTimer = 0.f;
 
 	int hp = 0;
@@ -93,5 +96,8 @@ public:
 	//LMJ: Health related methods. Used in UserInterface.
 	int GetHp() const { return hp; }
 	int GetMaxHp() const { return maxHp; }
+
+	void AddHp(int hp) { this->hp = Utils::Clamp(this->hp + hp, 0, this->maxHp); }
+	void AddAmmo(int ammo) { this->remainAmmo += ammo; }
 };
 

@@ -6,6 +6,7 @@
 #include "ItemGo.h"
 #include "UserInterface.h"
 #include "TextGo.h"
+#include "Turret.h"
 
 SceneGame::SceneGame() 
 	: Scene(SceneIds::Game)
@@ -23,11 +24,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/ammo_pickup.png");
 	texIds.push_back("graphics/health_pickup.png");
+	texIds.push_back("graphics/turret.png");
 	fontIds.push_back("fonts/zombiecontrol.ttf");
 	texIds.push_back("graphics/blood.png");
 
 	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
+	turret = (Turret*)AddGameObject(new Turret("Turret"));
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -36,10 +39,10 @@ void SceneGame::Init()
 		zombiePool.push_back(zombie);
 	}
 
-	item = (ItemGo*)AddGameObject(new ItemGo("ammopack"));
+	item = (ItemGo*)AddGameObject(new ItemGo("AmmoPack"));
 	item->SetTexId("graphics/ammo_pickup.png");
 	item->SetType(ItemGo::UpgradeType::Ammo);
-	item2 = (ItemGo*)AddGameObject(new ItemGo("healpack"));
+	item2 = (ItemGo*)AddGameObject(new ItemGo("HealPack"));
 	item2->SetTexId("graphics/health_pickup.png");
 	item2->SetType(ItemGo::UpgradeType::Heal);
 
@@ -60,7 +63,7 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	itemSpawnDistance = 400.f;
+	itemSpawnDistance = 200.f;
 
 	Scene::Enter();
 	if (wave == 20)

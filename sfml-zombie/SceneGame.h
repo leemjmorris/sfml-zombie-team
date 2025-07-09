@@ -6,11 +6,13 @@ class Zombie;
 class UserInterface;
 class ItemGo;
 class TileMap;
+class Turret;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
+	Turret* turret = nullptr;
 	UserInterface* userInterface = nullptr;
 	ItemGo* item = nullptr;
 	ItemGo* item2 = nullptr;

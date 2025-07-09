@@ -31,6 +31,9 @@ protected:
 
 	UpgradeType type = UpgradeType::Heal;
 
+	int healStat;
+	int ammoStat;
+
 public:
 	ItemGo(const std::string& name = "");
 	virtual ~ItemGo() = default;
