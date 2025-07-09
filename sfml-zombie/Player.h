@@ -30,7 +30,7 @@ protected:
 	sf::Vector2f look;
 	sf::Vector2f fireOffset;
 
-	float speed = 500.f;
+	float speed = 250.f;
 
 	SceneGame* sceneGame = nullptr;
 	TileMap* tileMap = nullptr;
@@ -47,6 +47,8 @@ protected:
 
 	int hp = 0;
 	int maxHp = 100;
+
+
 
 	// Ammo
 	int ammoUpgradeMount = 1;

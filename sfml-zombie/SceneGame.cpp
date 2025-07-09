@@ -8,7 +8,7 @@
 #include "TextGo.h"
 #include "Turret.h"
 
-SceneGame::SceneGame() 
+SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
 {
 }
@@ -50,6 +50,8 @@ void SceneGame::Init()
 
 	Scene::Init();
 	wave = 0;
+	itemSpawnDistance = 240.f;
+	zombieSpawnDistance = 90.f;
 }
 
 void SceneGame::Enter()
@@ -58,21 +60,26 @@ void SceneGame::Enter()
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
 	worldView.setSize(windowSize);
-	worldView.setCenter({0.f, 0.f});
+	worldView.setCenter({ 0.f, 0.f });
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	itemSpawnDistance = 200.f;
+	itemSpawnDistance = 400.f;
+
 
 	Scene::Enter();
 	if (wave == 20)
 	{
 		wave = 0;
+		itemSpawnDistance = 240.f;
+		zombieSpawnDistance = 90.f;
 	}
 	else if (wave < 20)
 	{
 		wave += 5;
+		itemSpawnDistance += 30.f;
+		zombieSpawnDistance += 140.f;
 	}
 	SpawnZombies(wave);
 
@@ -177,7 +184,20 @@ void SceneGame::SpawnZombies(int count)
 		}
 		zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
 		zombie->Reset();
-		zombie->SetPosition(Utils::RandomInUnitCircle() * 500.f);
+		float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
+		float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
+		sf::FloatRect mapSize({ -widthSize * 0.5f, -heightSize * 0.5f }, { widthSize, heightSize });
+		sf::Vector2f spawnPos = player->GetPosition();
+		do
+		{
+			sf::Vector2f unitPos = Utils::RandomOnUnitCircle();
+			spawnPos = unitPos * zombieSpawnDistance + player->GetPosition();
+		} 
+		while (spawnPos.x < mapSize.left + tileMap->GetCellSize().x ||
+			spawnPos.x > mapSize.left + mapSize.width - tileMap->GetCellSize().x ||
+			spawnPos.y < mapSize.top + tileMap->GetCellSize().y ||
+			spawnPos.y > mapSize.top + mapSize.height - tileMap->GetCellSize().y);
+		zombie->SetPosition(spawnPos);
 		zombieList.push_back(zombie);
 	}
 }
@@ -186,7 +206,7 @@ void SceneGame::SpawnItem(ItemGo* item)
 {
 	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
 	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
-	sf::FloatRect mapSize( {-widthSize * 0.5f, -heightSize * 0.5f}, { widthSize, heightSize });
+	sf::FloatRect mapSize({ -widthSize * 0.5f, -heightSize * 0.5f }, { widthSize, heightSize });
 	sf::Vector2f spawnPos = player->GetPosition();
 	do
 	{
