@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "TileMap.h"
+#include "ItemGo.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -65,6 +66,8 @@ void Player::Reset()
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 		tileMap = (TileMap*)sceneGame->FindGameObject("TileMap");
+		healItem = (ItemGo*)sceneGame->FindGameObject("AmmoPack");
+		ammoItem = (ItemGo*)sceneGame->FindGameObject("HealPack");
 	}
 	else
 	{
@@ -77,8 +80,7 @@ void Player::Reset()
 		bulletPool.push_back(bullet);
 	}
 	bulletList.clear();
-
-
+	
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
@@ -89,7 +91,6 @@ void Player::Reset()
 
 	shootTimer = 0.f;
 	hp = maxHp;
-
 
 	// player upgrade at enter scene
 	Upgrade((UpgradeType)SCENE_MGR.GetPlayerUpgradeType());
@@ -123,7 +124,6 @@ void Player::Update(float dt)
 	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
 	sf::FloatRect mapSize({ -widthSize * 0.5f, -heightSize * 0.5f }, { widthSize, heightSize });
 	sf::Vector2f pos = GetPosition();
-	std::cout << pos.x << "," << pos.y << std::endl;
 	pos.x = Utils::Clamp(pos.x, mapSize.left + tileMap->GetCellSize().x, mapSize.left + widthSize - tileMap->GetCellSize().x);
 	pos.y = Utils::Clamp(pos.y, mapSize.top + tileMap->GetCellSize().y, mapSize.top + heightSize - tileMap->GetCellSize().y);
 	SetPosition(pos);
@@ -145,6 +145,10 @@ void Player::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 	}
+
+	std::cout << hp << std::endl;
+	std::cout << currentAmmo << std::endl;
+	std::cout << remainAmmo << std::endl;
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -197,7 +201,7 @@ void Player::Upgrade(UpgradeType type)
 	switch (type)
 	{
 	case Player::UpgradeType::FireRate:
-		shootInterval *= 0.5f;
+		shootInterval *= 0.2f;
 		break;
 	case Player::UpgradeType::ClipSize:
 		ammoUpgradeMount += 1;
@@ -206,13 +210,13 @@ void Player::Upgrade(UpgradeType type)
 		maxHp += 50;
 		break;
 	case Player::UpgradeType::Speed:
-		speed *= 3.f;
+		speed += 5.f;
 		break;
 	case Player::UpgradeType::HealthPickUp:
-
+		healItem->Upgrade(ItemGo::UpgradeType::Heal);
 		break;
 	case Player::UpgradeType::AmmoPickUp:
-
+		ammoItem->Upgrade(ItemGo::UpgradeType::Ammo);
 		break;
 	default:
 		break;

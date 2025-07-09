@@ -46,8 +46,11 @@ void ItemGo::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = -1;
 
-	spawnInterval = 5.f;
+	spawnInterval = 10.f;
 	despawnInterval = 5.f;
+
+	ammoStat = 0;
+	healStat = 0;
 }
 
 void ItemGo::Release()
@@ -80,19 +83,29 @@ void ItemGo::Update(float dt)
 			isSpawn = true;
 			sceneGame->SpawnItem(this);
 			hitBox.UpdateTransform(item, GetLocalBounds());
-			if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
-			{
-				Upgrade(type);
-			}
 			spawnTime = 0.f;
 		}
 	}
 	else
 	{
+		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+		{
+			switch (type)
+			{
+			case ItemGo::UpgradeType::Heal:
+				player->AddHp(25 + healStat);
+				break;
+			case ItemGo::UpgradeType::Ammo:
+				player->AddAmmo(12 + ammoStat);
+				break;
+			default:
+				break;
+			}
+			Reset();
+		}
 		despawnTime += dt;
 		if (despawnTime > despawnInterval)
 		{
-			isSpawn = false;
 			Reset();
 		}
 	}
@@ -112,8 +125,10 @@ void ItemGo::Upgrade(UpgradeType ty)
 	switch (ty)
 	{
 	case ItemGo::UpgradeType::Heal:
+		healStat += 25;
 		break;
 	case ItemGo::UpgradeType::Ammo:
+		ammoStat += 6;
 		break;
 	default:
 		break;

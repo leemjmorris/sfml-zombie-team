@@ -36,10 +36,10 @@ void SceneGame::Init()
 		zombiePool.push_back(zombie);
 	}
 
-	item = (ItemGo*)AddGameObject(new ItemGo("ammopack"));
+	item = (ItemGo*)AddGameObject(new ItemGo("AmmoPack"));
 	item->SetTexId("graphics/ammo_pickup.png");
 	item->SetType(ItemGo::UpgradeType::Ammo);
-	item2 = (ItemGo*)AddGameObject(new ItemGo("healpack"));
+	item2 = (ItemGo*)AddGameObject(new ItemGo("HealPack"));
 	item2->SetTexId("graphics/health_pickup.png");
 	item2->SetType(ItemGo::UpgradeType::Heal);
 
@@ -60,7 +60,7 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	itemSpawnDistance = 400.f;
+	itemSpawnDistance = 200.f;
 
 	Scene::Enter();
 	if (wave == 20)
