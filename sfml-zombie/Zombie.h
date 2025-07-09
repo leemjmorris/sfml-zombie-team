@@ -3,6 +3,7 @@
 #include "HitBox.h"
 
 class Player;
+class SceneGame;
 
 class Zombie : public GameObject
 {
@@ -38,6 +39,8 @@ protected:
 	float bloodTimerMax = 1.f;
 
 	Player* player = nullptr;
+	SceneGame* sceneGame = nullptr;
+	std::list<Zombie*> zombieList;
 
 	HitBox hitBox;
 	

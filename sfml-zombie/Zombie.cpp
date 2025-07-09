@@ -57,8 +57,16 @@ void Zombie::Release()
 
 void Zombie::Reset()
 {
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
+	{
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		
+	}
+	else
+	{
+		sceneGame = nullptr;
+	}
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
-
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
@@ -122,6 +130,35 @@ void Zombie::Update(float dt)
 				}
 			}
 		}
+	}
+
+	zombieList = sceneGame->GetZombies();
+
+	bool isCollision = false;
+	for (auto zombie : zombieList)
+	{
+		if (zombie->texId != "graphics/blood.png" && zombie != this && this->texId != "graphics/blood.png")
+		{
+			if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
+			{
+				float distance1 = Utils::Distance(position, player->GetPosition());
+				float distance2 = Utils::Distance(zombie->GetPosition(), player->GetPosition());
+				if (distance1 >= distance2)
+				{
+					speed = 0.f;
+				}
+				else
+				{
+					zombie->speed = 0.f;
+				}
+				isCollision = true;
+			}
+		}
+	}
+
+	if (!isCollision || speed == 0.f)
+	{
+		SetType(type);
 	}
 }
 
