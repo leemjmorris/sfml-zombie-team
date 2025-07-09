@@ -26,6 +26,7 @@ protected:
 	int score = 0;
 
 	float itemSpawnDistance;
+	float zombieSpawnDistance;
 
 public:
 	SceneGame();

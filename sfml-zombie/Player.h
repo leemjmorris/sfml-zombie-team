@@ -29,7 +29,7 @@ protected:
 	sf::Vector2f look;
 	sf::Vector2f fireOffset;
 
-	float speed = 500.f;
+	float speed = 250.f;
 
 	SceneGame* sceneGame = nullptr;
 	TileMap* tileMap = nullptr;
@@ -39,11 +39,13 @@ protected:
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
 
-	float shootInterval = 2.f;
+	float shootInterval = 1.f;
 	float shootTimer = 0.f;
 
 	int hp = 0;
 	int maxHp = 100;
+
+
 
 	// Ammo
 	int ammoUpgradeMount = 1;

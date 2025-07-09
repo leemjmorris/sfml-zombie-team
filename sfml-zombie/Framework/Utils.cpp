@@ -38,7 +38,8 @@ sf::Vector2f Utils::RandomOnUnitCircle()
     do
     {
         point = RandomInUnitCircle();
-    } while (SqrMagnitude(point) < std::numeric_limits<float>::epsilon());
+    } 
+    while (SqrMagnitude(point) < std::numeric_limits<float>::epsilon());
     
     return GetNormal(point);
 }

@@ -64,11 +64,6 @@ void Zombie::Reset()
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
-	if (texId != "graphics/blood.png")
-	{
-		
-	}
-
 	hp = maxHp;
 	attackTimer = 0.f;
 	bloodTimer = 0.f;
@@ -127,27 +122,26 @@ void Zombie::SetType(Types type)
 	case Types::Bloater:
 		texId = "graphics/bloater.png";
 		maxHp = 200;
-
 		speed = 50.0f;                    // float으로 명시적 지정
-		damage = 100.0f;                  // float으로 명시적 지정
+		damage = 50.0f;                  // float으로 명시적 지정
 		attackInterval = 1.0f;            // float으로 명시적 지정
 		scoreValue = 50;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
-		speed = 100.0f;
-		damage = 100.0f;
+		speed = 150.0f;
+		damage = 20.0f;
 		attackInterval = 1.0f;
-		scoreValue = 30;
+		scoreValue = 20;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
-		maxHp = 50;
-		speed = 200;
-		damage = 20.f;
+		maxHp = 150;
+		speed = 100.f;
+		damage = 25.f;
 		attackInterval = 1.f;
-		scoreValue = 20;
+		scoreValue = 30;
 		break;
 	case Types::Blood:
 		texId = "graphics/blood.png";
