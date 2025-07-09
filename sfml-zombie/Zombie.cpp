@@ -2,6 +2,7 @@
 #include "Zombie.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "Bullet.h"
 
 Zombie::Zombie(const std::string& name)
 	: GameObject(name)
@@ -49,6 +50,11 @@ void Zombie::Init()
 
 
 	SetType(type);
+	bullet = new Bullet();
+	if (bullet != nullptr)
+	{
+		bullet->BulletSetType(Bullet::BulletType::bossbullet);
+	}
 }
 
 void Zombie::Release()
@@ -72,6 +78,12 @@ void Zombie::Reset()
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
+	for (Bullet* bullet : bulletList)
+	{
+		bullet->SetActive(false);
+		bulletPool.push_back(bullet);
+	}
+	bulletList.clear();
 	hp = maxHp;
 	attackTimer = 0.f;
 	bloodTimer = 0.f;
@@ -80,6 +92,20 @@ void Zombie::Reset()
 
 void Zombie::Update(float dt)
 {
+	auto it = bulletList.begin();
+	while (it != bulletList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			bulletPool.push_back(*it);
+			it = bulletList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
 	bloodTimer += dt;
 
 	if (texId == "graphics/blood.png" && hp > 0)
@@ -180,6 +206,14 @@ void Zombie::Update(float dt)
 			speed = 150.f;
 		}
 	}
+
+	if (texId == "graphics/boss.png" && hp > 0)
+	{
+		if (attackTimer >= attackInterval)
+		{
+			Shoot();
+		}
+	}
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -196,9 +230,9 @@ void Zombie::SetType(Types type)
 	case Types::Bloater:
 		texId = "graphics/bloater.png";
 		maxHp = 150;
-		speed = 50.0f;                    // float으로 명시적 지정
-		damage = 40.0f;                  // float으로 명시적 지정
-		attackInterval = 1.0f;            // float으로 명시적 지정
+		speed = 50.0f;
+		damage = 40.0f;
+		attackInterval = 1.0f;
 		scoreValue = 30;
 		break;
 	case Types::Chaser:
@@ -264,3 +298,28 @@ void Zombie::OnDamage(int damage)
 	}
 }
 
+void Zombie::Shoot()
+{
+	Bullet* bullet = nullptr;
+	if (bulletPool.empty())
+	{
+		bullet = new Bullet();
+		bullet->Init();
+	}
+	else
+	{
+		bullet = bulletPool.front();
+		bulletPool.pop_front();
+		bullet->SetActive(true);
+	}
+
+	bullet->Reset();
+
+	sf::Transform t;
+	t.rotate(GetRotation());
+	sf::Vector2f worldFireOffset = t.transformPoint(fireOffset);
+	bullet->Fire(position + worldFireOffset * 10.f, direction, 150.f, 20);
+
+	bulletList.push_back(bullet);
+	sceneGame->AddGameObject(bullet);
+}

@@ -6,11 +6,17 @@ class SceneGame;
 
 class Bullet : public GameObject
 {
+public:
+	enum class BulletType
+	{
+		bullet,
+		bossbullet,
+	};
+
 protected:
-
+	BulletType type = BulletType::bullet;
 	sf::Sprite body;
-	std::string texId = "graphics/bullet.png";
-
+	std::string texId;
 	sf::Vector2f direction;
 	float speed = 0.f;
 	int damage = 0;
@@ -18,6 +24,8 @@ protected:
 	HitBox hitBox;
 
 	SceneGame* sceneGame = nullptr;
+
+
 
 public:
 	Bullet(const std::string& name = "");
@@ -35,6 +43,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+
 	sf::FloatRect GetLocalBounds() const override
 	{
 		return body.getLocalBounds();
@@ -46,5 +55,11 @@ public:
 	}
 
 	void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d);
+	void BulletSetType(BulletType type);
+
+	std::string BulletGetType()
+	{
+		return texId;
+	}
 };
 

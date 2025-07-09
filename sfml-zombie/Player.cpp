@@ -52,6 +52,11 @@ void Player::Init()
 	//SetOrigin(Origins::MC);
 	currentAmmo = 6 * ammoUpgradeMount;
 	remainAmmo = 30;
+	bullet = new Bullet();
+	if (bullet != nullptr)
+	{
+		bullet->BulletSetType(Bullet::BulletType::bullet);
+	}
 }
 
 void Player::Release()
@@ -139,6 +144,7 @@ void Player::Update(float dt)
 	{
 		if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval)
 		{
+			
 			shootTimer = 0.f;
 			Shoot();
 			currentAmmo--;

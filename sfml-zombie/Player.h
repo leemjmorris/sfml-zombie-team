@@ -38,9 +38,11 @@ protected:
 	ItemGo* ammoItem = nullptr;
 
 	HitBox hitBox;
+	Bullet* bullet;
 
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
+
 
 	float shootInterval = 1.f;
 	float shootTimer = 0.f;

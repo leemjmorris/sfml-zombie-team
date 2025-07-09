@@ -45,6 +45,8 @@ void Bullet::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 1;
+
+	BulletSetType(type);
 }
 
 void Bullet::Release()
@@ -75,18 +77,37 @@ void Bullet::Update(float dt)
 	const auto& list = sceneGame->GetZombies();
 	for (const auto zombie : list)
 	{
-		if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
+		if (BulletGetType() == "graphics/bullet.png")
 		{
-			if (zombie->GetCurrentType() != "graphics/blood.png")
+			if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
 			{
-				SetActive(false);
-				zombie->OnDamage(damage);
+				if (zombie->GetCurrentType() != "graphics/blood.png")
+				{
+					SetActive(false);
+					zombie->OnDamage(damage);
+				}
+				else
+				{
+					SetActive(true);
+				}
+				break;
 			}
-			else
+		}
+		if (BulletGetType() == "graphics/bossbullet.png")
+		{
+			if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
 			{
-				SetActive(true);
+				if (zombie->GetCurrentType() != "graphics/blood.png")
+				{
+					SetActive(false);
+					zombie->OnDamage(damage);
+				}
+				else
+				{
+					SetActive(true);
+				}
+				break;
 			}
-			break;
 		}
 	}
 }
@@ -105,4 +126,18 @@ void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int
 	damage = d;
 
 	SetRotation(Utils::Angle(direction));
+}
+
+void Bullet::BulletSetType(BulletType type)
+{
+	this->type = type;
+	switch(this->type)
+	{
+	case BulletType::bullet:
+		texId = "graphics/bullet.png";
+		break;
+	case BulletType::bossbullet:
+		texId = "graphics/bossbullet.png";
+		break;
+	}
 }

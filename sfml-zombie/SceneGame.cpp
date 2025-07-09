@@ -28,6 +28,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/blood.png");
 	texIds.push_back("graphics/ammo_icon.png");
 	texIds.push_back("graphics/boss.png");
+	texIds.push_back("graphics/bossbullet.png");
 
 	fontIds.push_back("fonts/zombiecontrol.ttf");
 	
