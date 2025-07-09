@@ -23,7 +23,6 @@ UserInterface::UserInterface()
 
 UserInterface::~UserInterface()
 {
-    // TextGo 객체들은 Scene에서 관리되므로 여기서 delete하지 않음
 }
 
 void UserInterface::Init()
@@ -34,6 +33,7 @@ void UserInterface::Init()
     CreateTextObjects();
     SetupTextPositions();
     SetupHealthBar();
+
     LoadHighScore();
 }
 
@@ -41,12 +41,10 @@ void UserInterface::Release()
 {
     SaveHighScore();
 
-    // TextGo 객체들 정리
-    if (textScore) { delete textScore; textScore = nullptr; }
-    if (textHighScore) { delete textHighScore; textHighScore = nullptr; }
-    if (textAmmo) { delete textAmmo; textAmmo = nullptr; }
-    if (textWaveCount) { delete textWaveCount; textWaveCount = nullptr; }
-    if (textZombieCount) { delete textZombieCount; textZombieCount = nullptr; }
+    textScore = nullptr;
+    textAmmo = nullptr;
+    textWaveCount = nullptr;
+    textZombieCount = nullptr;
 }
 
 void UserInterface::Reset()
@@ -72,6 +70,12 @@ void UserInterface::Reset()
     SetRemainAmmo(0);
     SetWaveCount(1);
     SetZombieCount(0);
+
+    textScore->Reset();
+    textHighScore->Reset();
+    textAmmo->Reset();
+    textWaveCount->Reset();
+    textZombieCount->Reset();
 }
 
 void UserInterface::Update(float dt)
@@ -98,10 +102,11 @@ void UserInterface::Draw(sf::RenderWindow& window)
 
     // UI View 설정
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
-    sf::View uiView;
-    uiView.setSize(windowSize);
-    uiView.setCenter(windowSize * 0.5f);
-    window.setView(uiView);
+    sf::View view = FRAMEWORK.GetWindow().getView();
+    //sf::View uiView;
+    /*uiView.setSize(windowSize);
+    uiView.setCenter(windowSize * 0.5f);*/
+    window.setView(view);
 
     // 모든 TextGo 직접 그리기
     if (textScore) textScore->Draw(window);
@@ -118,16 +123,11 @@ void UserInterface::Draw(sf::RenderWindow& window)
 void UserInterface::CreateTextObjects()
 {
 
-    textScore = new TextGo("fonts/zombiecontrol.ttf", "UI_Score");
-
-    textHighScore = new TextGo("fonts/zombiecontrol.ttf", "UI_HighScore");
-
-    textAmmo = new TextGo("fonts/zombiecontrol.ttf", "UI_Ammo");
-
+    textScore = new TextGo("fonts/zombiecontrol.ttf", "UI_Score");    
+    textHighScore = new TextGo("fonts/zombiecontrol.ttf", "UI_HighScore");    
+    textAmmo = new TextGo("fonts/zombiecontrol.ttf", "UI_Ammo");    
     textWaveCount = new TextGo("fonts/zombiecontrol.ttf", "UI_Wave");
-
     textZombieCount = new TextGo("fonts/zombiecontrol.ttf", "UI_Zombie");
-
 
     // 텍스트 기본 설정
     textScore->SetCharacterSize(36);
