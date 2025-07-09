@@ -90,7 +90,7 @@
     <ClCompile Include="Turret.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGameOver.cpp">
+    <ClCompile Include="SceneOverlay.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,7 +176,7 @@
     <ClInclude Include="Turret.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGameOver.h">
+    <ClInclude Include="SceneOverlay.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "SceneOverlay.h"
 
 class Player;
 class Zombie;
@@ -20,18 +21,24 @@ protected:
 	ItemGo* item2 = nullptr;
 	TileMap* tileMap = nullptr;
 
+	SceneOverlay* sceneOverlay = nullptr;
+
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 
 	sf::Sprite cursor;
 
-	int wave;
+	int wave = 0;
 
 	int score = 0;
 	int currentScore = 0;
 
-	float itemSpawnDistance;
-	float zombieSpawnDistance;
+	float itemSpawnDistance = 240.f;
+	float zombieSpawnDistance = 90.f;
+
+	// LMJ: I will use this when BOSS is added. To pop-up VICTORY UI
+	bool hasBoss = false;
+	bool bossDefeated = false;
 
 public:
 	SceneGame();
@@ -48,6 +55,9 @@ public:
 
 	void SpawnZombies(int count);
 	void SpawnItem(ItemGo* item);
+
+	//LMJ: I will use this when BOSS is added.
+	//void OnBossDefeated();
 
 	const std::list<Zombie*>& GetZombies() const 
 	{

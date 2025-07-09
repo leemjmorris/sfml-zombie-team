@@ -203,17 +203,17 @@ void SceneTitle::ProcessFadeIn(float dt)
 {
 	fadeTimer += dt;
 	
-	float progress = fadeTimer / fadeDuration; //진행률 계산 (0.0 ~ 1.0)
+	float progress = fadeTimer / fadeDuration;
 	if (progress > 1.0f) progress = 1.0f;
 	
-	fadeAlpha = 255.0f * (1.0f - progress); //255에서 0으로 감소
+	fadeAlpha = 255.0f * (1.0f - progress); 
 
 	if (progress >= 1.0f)
 	{
 		fadeAlpha = 0.0f;
 		fadeIn = false;
 		fadeTimer = 0.0f;
-		std::cout << "Fade in complete!" << std::endl; //디버깅용
+		std::cout << "Fade in complete!" << std::endl; 
 	}
 
 	UpdateFadeColor();

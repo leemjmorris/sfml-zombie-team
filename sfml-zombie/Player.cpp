@@ -46,10 +46,11 @@ void Player::SetOrigin(Origins preset)
 
 void Player::Init()
 {
+	SetWarningMessage();
+
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-	fireOffset = { 2.f, 1.1f }; //LMJ : Bullet Offset to make bullet fire from the gun.
-	//SetOrigin(Origins::MC);
+	fireOffset = { 2.f, 1.1f };
 	currentAmmo = 6 * ammoUpgradeMount;
 	remainAmmo = 30;
 }
@@ -60,6 +61,10 @@ void Player::Release()
 
 void Player::Reset()
 {
+	showWarning = false;
+	warningTimer = 0.f;
+	SetWarningMessage();
+
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
@@ -90,12 +95,13 @@ void Player::Reset()
 	shootTimer = 0.f;
 	hp = maxHp;
 
-	// player upgrade at enter scene
 	Upgrade((UpgradeType)SCENE_MGR.GetPlayerUpgradeType());
 }
 
 void Player::Update(float dt)
 {
+	UpdateWarningMessage(dt);
+
 	auto it = bulletList.begin();
 	while (it != bulletList.end())
 	{
@@ -137,6 +143,8 @@ void Player::Update(float dt)
 
 	if (currentAmmo > 0)
 	{
+		showWarning = false;
+
 		if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval)
 		{
 			shootTimer = 0.f;
@@ -146,6 +154,12 @@ void Player::Update(float dt)
 	}
 	else if (remainAmmo == 0)
 	{
+		showWarning = true;
+		warningTimer = 0.f;
+		warningMessage = "No Ammo Left!";
+		warningText.setString(warningMessage);
+		warningText.setFillColor(sf::Color::Red);
+
 		if (InputMgr::GetKeyDown(sf::Keyboard::R))
 		{
 			currentAmmo = 0;
@@ -153,19 +167,38 @@ void Player::Update(float dt)
 	}
 	else if (currentAmmo == 0)
 	{
+		showWarning = true;
+		warningMessage = "Press R to Reload!";
+		warningText.setString(warningMessage);
+		warningText.setFillColor(sf::Color::Yellow);
+
 		if (InputMgr::GetKeyDown(sf::Keyboard::R))
 		{
 			currentAmmo = 6 * ammoUpgradeMount;
-			remainAmmo -= currentAmmo;
+
+			if (remainAmmo >= currentAmmo)
+			{
+				remainAmmo -= currentAmmo;
+			}
+			else
+			{
+				int sum = currentAmmo + remainAmmo;
+				if (sum > currentAmmo)
+				{
+					currentAmmo = 6 * ammoUpgradeMount;
+				}
+			}
+			showWarning = false;
+			warningTimer = 0.f;
 		}
-	}
-	
+	}	
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
 	hitBox.Draw(window);
+	DrawWarningMessage(window);
 }
 
 void Player::Shoot()
@@ -231,5 +264,52 @@ void Player::Upgrade(UpgradeType type)
 		break;
 	default:
 		break;
+	}
+}
+
+void Player::SetWarningMessage()
+{
+	warningFont = &FONT_MGR.Get("fonts/zombiecontrol.ttf");
+
+	warningText.setFont(*warningFont);
+	warningText.setCharacterSize(36);
+	warningText.setFillColor(sf::Color::Red);
+	warningText.setStyle(sf::Text::Bold);
+
+	warningMessage = "Press R to Reload!";
+	warningText.setString(warningMessage);
+
+	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
+	Utils::SetOrigin(warningText, Origins::TC);
+	warningText.setPosition(windowSize.x * 0.5f, windowSize.y * 0.2f);
+}
+
+void Player::UpdateWarningMessage(float dt)
+{
+    if (showWarning)
+    {
+        warningTimer += dt;
+        
+        bool isVisible = fmod(warningTimer, 1.0f) < 0.5f;
+        sf::Color color = warningText.getFillColor();
+        color.a = isVisible ? 255 : 0;
+        warningText.setFillColor(color);
+    }
+}
+
+void Player::DrawWarningMessage(sf::RenderWindow& window)
+{
+	if (showWarning)
+	{
+		sf::View currentView = window.getView();
+		sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
+		sf::View uiView;
+		uiView.setSize(windowSize);
+		uiView.setCenter(windowSize * 0.5f);
+		window.setView(uiView);
+
+		window.draw(warningText);
+
+		window.setView(currentView);
 	}
 }

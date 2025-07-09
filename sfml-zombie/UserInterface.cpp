@@ -6,6 +6,7 @@
 #include "TextGo.h"
 #include <fstream>
 #include <iostream>
+#include "SceneOverlay.h"
 
 UserInterface::UserInterface()
     : GameObject("UserInterface")
@@ -196,7 +197,7 @@ void UserInterface::SetupTextPositions()
 
     textScore->SetPosition(sf::Vector2f(10.0f, 10.0f));
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - 200.0f, 10.0f));
-    textAmmo->SetPosition(sf::Vector2f(10.0f, windowSize.y - 80.0f));
+    textAmmo->SetPosition(sf::Vector2f(60.0f, windowSize.y - 68.0f));
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - 150.0f, windowSize.y - 80.0f));
     textZombieCount->SetPosition(sf::Vector2f(windowSize.x - 300.0f, windowSize.y - 40.0f));
 }
@@ -305,6 +306,11 @@ void UserInterface::SetHighScore(int highScore)
     sf::FloatRect bounds = textHighScore->GetLocalBounds();
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, 10.0f));
     textHighScore->SetOrigin(Origins::TL);
+}
+
+int UserInterface::GetHighScore()
+{
+    return highScore;
 }
 
 void UserInterface::SetCurrentAmmo(int currentAmmo)

@@ -26,13 +26,13 @@ protected:
 	bool isSpawn = false;
 
 	HitBox hitBox;
-	Player* player;
+	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
 
 	UpgradeType type = UpgradeType::Heal;
 
-	int healStat;
-	int ammoStat;
+	int healStat = 0;
+	int ammoStat = 0;
 
 public:
 	ItemGo(const std::string& name = "");
