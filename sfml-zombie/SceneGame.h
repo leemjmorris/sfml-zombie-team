@@ -21,6 +21,8 @@ protected:
 
 	sf::Sprite cursor;
 
+	int wave;
+
 	int score = 0;
 
 	float itemSpawnDistance;

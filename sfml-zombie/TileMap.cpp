@@ -108,7 +108,7 @@ void TileMap::Init()
 	sortingLayer = SortingLayers::Background;
 	sortingOrder = 0;
 
-	Set({ 50, 50 }, {50.f, 50.f});
+	
 }
 
 void TileMap::Release()
@@ -118,7 +118,17 @@ void TileMap::Release()
 void TileMap::Reset()
 {
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
-
+	if (X > 30 && Y > 30)
+	{
+		X = 12;
+		Y = 12;
+	}
+	else if (X < 31 && Y < 31)
+	{
+		X += 6;
+		Y += 6;
+	}
+	Set({ X, Y }, { 50.f, 50.f });
 	SetOrigin(Origins::MC);
 	SetScale({ 1.f, 1.f });
 	SetPosition({ 0.f, 0.f });

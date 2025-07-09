@@ -24,6 +24,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ammo_pickup.png");
 	texIds.push_back("graphics/health_pickup.png");
 	fontIds.push_back("fonts/zombiecontrol.ttf");
+	texIds.push_back("graphics/blood.png");
 
 	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
@@ -45,6 +46,7 @@ void SceneGame::Init()
 	userInterface = (UserInterface*)AddGameObject(new UserInterface());
 
 	Scene::Init();
+	wave = 0;
 }
 
 void SceneGame::Enter()
@@ -61,6 +63,15 @@ void SceneGame::Enter()
 	itemSpawnDistance = 400.f;
 
 	Scene::Enter();
+	if (wave == 20)
+	{
+		wave = 0;
+	}
+	else if (wave < 20)
+	{
+		wave += 5;
+	}
+	SpawnZombies(wave);
 
 	score = 0; //LMJ : Updated for the UI making
 	if (userInterface)
@@ -113,11 +124,6 @@ void SceneGame::Update(float dt)
 	}
 
 	worldView.setCenter(player->GetPosition());
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SpawnZombies(10);
-	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 	{

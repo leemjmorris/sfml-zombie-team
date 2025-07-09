@@ -77,8 +77,15 @@ void Bullet::Update(float dt)
 	{
 		if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
 		{
-			SetActive(false);
-			zombie->OnDamage(damage);
+			if (zombie->GetCurrentType() != "graphics/blood.png")
+			{
+				SetActive(false);
+				zombie->OnDamage(damage);
+			}
+			else
+			{
+				SetActive(true);
+			}
 			break;
 		}
 	}

@@ -12,6 +12,7 @@ public:
 		Bloater,
 		Chaser,
 		Crawler,
+		Blood,
 	};
 
 	static const int TotalTypes = 3;
@@ -33,6 +34,8 @@ protected:
 	float attackInterval = 0.f;
 
 	float attackTimer = 0.f;
+	float bloodTimer = 0.f;
+	float bloodTimerMax = 1.f;
 
 	Player* player = nullptr;
 
@@ -55,6 +58,10 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetType(Types type);
+	sf::String GetCurrentType()
+	{
+		return texId;
+	}
 
 	sf::FloatRect GetLocalBounds() const override
 	{

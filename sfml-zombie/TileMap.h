@@ -11,6 +11,9 @@ protected:
 	sf::Vector2i cellCount;
 	sf::Vector2f cellSize;
 
+	int X = 6;
+	int Y = 6;
+
 public:
 	TileMap(const std::string& name = "");
 	virtual ~TileMap() = default;
@@ -29,6 +32,15 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetX(int x)
+	{
+		X = x;
+	}
+	void SetY(int y)
+	{
+		Y = y;
+	}
 
 	// Get function
 	sf::Vector2i GetCellCount() const{ return cellCount; }

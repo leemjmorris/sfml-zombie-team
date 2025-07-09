@@ -46,6 +46,8 @@ void Zombie::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
+
+
 	SetType(type);
 }
 
@@ -62,35 +64,51 @@ void Zombie::Reset()
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
+	if (texId != "graphics/blood.png")
+	{
+		
+	}
 
 	hp = maxHp;
 	attackTimer = 0.f;
+	bloodTimer = 0.f;
+	bloodTimerMax = 1.f;
 }
 
 void Zombie::Update(float dt)
 {
-	direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-
-	if (direction.x > 0.f) //LMJ: changed rotation to scale.
+	bloodTimer += dt;
+	
+	if (texId == "graphics/blood.png" && hp > 0)
 	{
-		SetScale({1.f, 1.f});
+		if (bloodTimer > bloodTimerMax)
+		{
+			hp -= 1;
+			body.setColor(sf::Color(body.getColor().r, body.getColor().g, body.getColor().b, body.getColor().a * 0.9));
+			bloodTimer = 0.f;
+		}
 	}
-	else
+	else if (texId == "graphics/blood.png" && hp == 0)
 	{
-		SetScale({ -1.f, 1.f });
+		SetActive(false);
 	}
-
-	SetPosition(GetPosition() + direction * speed * dt);
-
-	hitBox.UpdateTransform(body, GetLocalBounds());
 
 	attackTimer += dt;
-	if (attackTimer > attackInterval)
+	if (texId != "graphics/blood.png")
 	{
-		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
+		SetRotation(Utils::Angle(direction));
+		SetPosition(GetPosition() + direction * speed * dt);
+
+		hitBox.UpdateTransform(body, GetLocalBounds());
+
+		if (attackTimer > attackInterval)
 		{
-			attackTimer = 0.f;
-			player->OnDamage(damage);
+			if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+			{
+				attackTimer = 0.f;
+				player->OnDamage(damage);
+			}
 		}
 	}
 }
@@ -109,6 +127,7 @@ void Zombie::SetType(Types type)
 	case Types::Bloater:
 		texId = "graphics/bloater.png";
 		maxHp = 200;
+
 		speed = 50.0f;                    // float으로 명시적 지정
 		damage = 100.0f;                  // float으로 명시적 지정
 		attackInterval = 1.0f;            // float으로 명시적 지정
@@ -125,10 +144,17 @@ void Zombie::SetType(Types type)
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
-		speed = 200.0f;
-		damage = 100.0f;
-		attackInterval = 1.0f;
+		speed = 200;
+		damage = 20.f;
+		attackInterval = 1.f;
 		scoreValue = 20;
+		break;
+	case Types::Blood:
+		texId = "graphics/blood.png";
+		maxHp = 10;
+		speed = 0;
+		damage = 0.f;
+		attackInterval = 1.f;
 		break;
 	}
 }
@@ -136,16 +162,19 @@ void Zombie::SetType(Types type)
 void Zombie::OnDamage(int damage)
 {
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
+
 	if (hp == 0)
 	{
+		SetType(Types::Blood);
+		hp = maxHp;
+		body.setTexture(TEXTURE_MGR.Get("graphics/blood.png"), true);
+		sortingOrder = -1;
 		// Scene을 통해 점수 추가
 		Scene* currentScene = SCENE_MGR.GetCurrentScene();
 		if (currentScene)
 		{
 			currentScene->AddScore(scoreValue);
 		}
-
-		SetActive(false);
 	}
 }
 
