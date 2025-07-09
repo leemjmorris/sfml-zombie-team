@@ -4,6 +4,7 @@
 
 class SceneGame;
 class Bullet;
+class TileMap;
 
 class Player : public GameObject
 {
@@ -30,6 +31,7 @@ protected:
 	float speed = 500.f;
 
 	SceneGame* sceneGame = nullptr;
+	TileMap* tileMap = nullptr;
 
 	HitBox hitBox;
 

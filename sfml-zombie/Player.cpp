@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "TileMap.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -62,6 +63,7 @@ void Player::Reset()
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		tileMap = (TileMap*)sceneGame->FindGameObject("TileMap");
 	}
 	else
 	{
@@ -115,6 +117,15 @@ void Player::Update(float dt)
 		Utils::Normalize(direction);
 	}
 	SetPosition(position + direction * speed * dt);
+
+	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
+	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
+	sf::FloatRect mapSize({ -widthSize * 0.5f, -heightSize * 0.5f }, { widthSize, heightSize });
+	sf::Vector2f pos = GetPosition();
+	std::cout << pos.x << "," << pos.y << std::endl;
+	pos.x = Utils::Clamp(pos.x, mapSize.left + tileMap->GetCellSize().x, mapSize.left + widthSize - tileMap->GetCellSize().x);
+	pos.y = Utils::Clamp(pos.y, mapSize.top + tileMap->GetCellSize().y, mapSize.top + heightSize - tileMap->GetCellSize().y);
+	SetPosition(pos);
 
 	sf::Vector2i mousePos = InputMgr::GetMousePosition();
 	sf::Vector2f mouseWorldPos = sceneGame->ScreenToWorld(mousePos);
