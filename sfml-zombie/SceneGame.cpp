@@ -6,6 +6,7 @@
 #include "ItemGo.h"
 #include "UserInterface.h"
 #include "TextGo.h"
+#include "SpriteGo.h"
 #include "Turret.h"
 
 SceneGame::SceneGame()
@@ -40,8 +41,12 @@ void SceneGame::Init()
 		zombiePool.push_back(zombie);
 	}
 
-	ammoIcon = (UserInterface*)AddGameObject(new UserInterface("AmmoIcon"));
-	ammoIcon->SetTexId
+	ammoIcon = (SpriteGo*)AddGameObject(new SpriteGo("AmmoIcon"));
+	ammoIcon->sortingLayer = SortingLayers::UI;
+	ammoIcon->sortingOrder = 0;
+	ammoIcon->SetTextureId("graphics/ammo_icon.png");
+	ammoIcon->SetScale({ 1.f, 1.f });
+	ammoIcon->SetPosition({ 500.f, 200.f });
 
 	item = (ItemGo*)AddGameObject(new ItemGo("AmmoPack"));
 	item->SetTexId("graphics/ammo_pickup.png");
@@ -84,11 +89,6 @@ void SceneGame::Enter()
 	}
 	SpawnZombies(wave);
 
-	//score = 0; //LMJ : Updated for the UI making
-	//if (userInterface)
-	//{
-	//	userInterface->SetScore(0);
-	//}
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -112,12 +112,6 @@ void SceneGame::Update(float dt)
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 
 	Scene::Update(dt);
-
-	if (userInterface)
-	{
-		userInterface->SetScore(score);
-		userInterface->SetZombieCount(zombieList);
-	}
 
 	auto it = zombieList.begin();
 	while (it != zombieList.end())
@@ -160,9 +154,6 @@ void SceneGame::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 	}
-	//userInterface->SetScore(score);
-	////userInterface->SetWaveCount(currentWave); LMJ: Will Add this when Wave is merged together.
-	//userInterface->SetZombieCount(zombieList.size());
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -174,6 +165,8 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 	window.setView(uiView);
 	window.draw(cursor);
+
+	window.setView(uiView);
 
 	if (userInterface)
 	{

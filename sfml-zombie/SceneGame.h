@@ -7,6 +7,7 @@ class UserInterface;
 class ItemGo;
 class TileMap;
 class Turret;
+class SpriteGo;
 
 class SceneGame : public Scene
 {
@@ -14,7 +15,7 @@ protected:
 	Player* player = nullptr;
 	Turret* turret = nullptr;
 	UserInterface* userInterface = nullptr;
-	UserInterface* ammoIcon = nullptr;
+	SpriteGo* ammoIcon = nullptr;
 	ItemGo* item = nullptr;
 	ItemGo* item2 = nullptr;
 	TileMap* tileMap = nullptr;

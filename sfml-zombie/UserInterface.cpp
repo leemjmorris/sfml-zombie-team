@@ -112,23 +112,34 @@ void UserInterface::Draw(sf::RenderWindow& window)
 void UserInterface::SetPosition(const sf::Vector2f& pos)
 {
     GameObject::SetPosition(pos);
-    item.setPosition(pos);
+    ammoImage.setPosition(pos);
 }
 
 void UserInterface::SetRotation(float rot)
 {
+    GameObject::SetRotation(rot);
+    ammoImage.setRotation(rot);
 }
 
 void UserInterface::SetScale(const sf::Vector2f& s)
 {
+    GameObject::SetScale(s);
+    ammoImage.setScale(s);
 }
 
 void UserInterface::SetOrigin(const sf::Vector2f& o)
 {
+    GameObject::SetOrigin(o);
+    ammoImage.setOrigin(o);
 }
 
 void UserInterface::SetOrigin(Origins preset)
 {
+    GameObject::SetOrigin(preset);
+    if (preset != Origins::Custom)
+    {
+        Utils::SetOrigin(ammoImage, preset);
+    }
 }
 
 void UserInterface::CreateTextObjects()
@@ -194,7 +205,7 @@ void UserInterface::SetupAmmoImage()
 {
     ammoImage.setTexture(TEXTURE_MGR.Get("graphics/ammo_icon.png"));
     ammoImage.setScale({ 1.f, 1.f });
-
+    ammoImage.setPosition({ 10.f, 10.f });
 }
 
 void UserInterface::SetupHealthBar()
