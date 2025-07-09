@@ -77,7 +77,6 @@ void UserInterface::Reset()
     SetCurrentAmmo(0);
     SetRemainAmmo(0);
     SetWaveCount(1);
-    SetZombieCount(0);
 }
 
 void UserInterface::Update(float dt)

@@ -65,7 +65,6 @@ public:
     void SetCurrentAmmo(int currentAmmo);
     void SetRemainAmmo(int remainAmmo);
     void SetWaveCount(int waveCount);
-    void SetZombieCount(int zombieCount);
 
     // TextGo ��ü�� ���� �Լ� (SceneGame���� Scene�� �߰��ϱ� ����)
     TextGo* GetScoreText() const { return textScore; }
