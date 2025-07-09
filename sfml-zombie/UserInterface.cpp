@@ -58,11 +58,13 @@ void UserInterface::Reset()
     {
         player = nullptr;
     }
+
     textScore->Reset();
     textHighScore->Reset();
     textAmmo->Reset();
     textWaveCount->Reset();
     textZombieCount->Reset();
+
     // 위치 재설정
     SetupTextPositions();
     SetupHealthBar();
@@ -74,8 +76,6 @@ void UserInterface::Reset()
     SetRemainAmmo(0);
     SetWaveCount(1);
     SetZombieCount(0);
-
-
 }
 
 void UserInterface::Update(float dt)
@@ -216,10 +216,9 @@ void UserInterface::UpdateHealthBar()
     if (!player)
         return;
 
-    // TODO: Player 클래스에 GetHp(), GetMaxHp() 함수 추가 후 사용
-    // 임시로 고정값 사용
-    float currentHp = 80.0f;
-    float maxHp = 100.0f;
+    // Player 클래스의 GetHp()와 GetMaxHp() 메서드 사용
+    float currentHp = static_cast<float>(player->GetHp());
+    float maxHp = static_cast<float>(player->GetMaxHp());
 
     if (maxHp <= 0.0f) return;
 
@@ -296,7 +295,7 @@ void UserInterface::SetHighScore(int highScore)
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textHighScore->GetLocalBounds();
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, 10.0f));
-    textHighScore->SetOrigin(Origins::TR);
+    textHighScore->SetOrigin(Origins::TL);
 }
 
 void UserInterface::SetCurrentAmmo(int currentAmmo)
@@ -328,8 +327,8 @@ void UserInterface::SetWaveCount(int waveCount)
     // 우측 정렬을 위해 위치 재조정
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textWaveCount->GetLocalBounds();
-    textWaveCount->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, windowSize.y - 80.0f));
-    textWaveCount->SetOrigin(Origins::TR);
+    textWaveCount->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 30.0f, windowSize.y - 80.0f));
+    textWaveCount->SetOrigin(Origins::TL);
 }
 
 void UserInterface::SetZombieCount(int zombieCount)
@@ -344,7 +343,7 @@ void UserInterface::SetZombieCount(int zombieCount)
         sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
         sf::FloatRect waveBounds = textWaveCount->GetLocalBounds();
         sf::FloatRect zombieBounds = textZombieCount->GetLocalBounds();
-        textZombieCount->SetPosition(sf::Vector2f(windowSize.x - waveBounds.width - zombieBounds.width - 30.0f, windowSize.y - 40.0f));
-        textZombieCount->SetOrigin(Origins::TR);
+        textZombieCount->SetPosition(sf::Vector2f(windowSize.x - waveBounds.width - zombieBounds.width + 80.0f, windowSize.y - 40.0f));
+        textZombieCount->SetOrigin(Origins::TL);
     }
 }

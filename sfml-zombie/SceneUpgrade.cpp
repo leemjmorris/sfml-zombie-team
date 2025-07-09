@@ -11,12 +11,12 @@ SceneUpgrade::SceneUpgrade()
 
 void SceneUpgrade::Init()
 {
-	texIds.push_back("graphics/background.png");
+	texIds.push_back("graphics/upgrade_background.png");
 	fontIds.push_back("fonts/zombiecontrol.ttf");
 
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
 
-	AddGameObject(new SpriteGo("graphics/background.png"));
+	Background = (SpriteGo*)AddGameObject(new SpriteGo("graphics/upgrade_background.png"));
 
 	menuUi = (MenuUI*)AddGameObject(new MenuUI("menuUI"));
 	menuUi->SetFontId("fonts/zombiecontrol.ttf");
@@ -27,6 +27,9 @@ void SceneUpgrade::Init()
 	menuUi->AddMessages("Increased Run Speed");
 	menuUi->AddMessages("More and Better Health Pickups");
 	menuUi->AddMessages("More and Better Ammo Pickups");
+
+	Background->SetOrigin(Origins::MC);
+	Background->sortingLayer = SortingLayers::Background;
 
 	for (int i = 0; i < menuUi->GetMenuCount(); i++)
 	{
@@ -53,6 +56,9 @@ void SceneUpgrade::Init()
 void SceneUpgrade::Enter()
 {
 	sf::Vector2f windows = FRAMEWORK.GetWindowSizeF();
+
+	worldView.setCenter({ 0.f, 0.f });
+	worldView.setSize(windows);
 
 	uiView.setCenter(windows * 0.5f);
 	uiView.setSize(windows);

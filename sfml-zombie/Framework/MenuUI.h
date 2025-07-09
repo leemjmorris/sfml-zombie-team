@@ -6,6 +6,7 @@ class MenuUI : public GameObject
 protected:
 	std::vector<TextGo> texts;
 	sf::RectangleShape chooseBar;
+	
 	Origins chooseBarOriginPreset = Origins::MC;
 	sf::Vector2f chooseBarOffset = sf::Vector2f{ 0.f, 15.f };
 
@@ -49,6 +50,7 @@ public:
 	int GetBarPos() const { return chooseBarPos; }
 
 	int GetMenuCount() const { return menuCount; }
+
 
 	std::vector<TextGo> GetTexts() const { return texts; }
 

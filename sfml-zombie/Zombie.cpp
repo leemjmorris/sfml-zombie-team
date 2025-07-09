@@ -78,36 +78,50 @@ void Zombie::Reset()
 void Zombie::Update(float dt)
 {
 	bloodTimer += dt;
-	
+
 	if (texId == "graphics/blood.png" && hp > 0)
 	{
 		if (bloodTimer > bloodTimerMax)
 		{
 			hp -= 1;
-			body.setColor(sf::Color(body.getColor().r, body.getColor().g, body.getColor().b, body.getColor().a * 0.9));
+			// 혈흔이 점점 투명해지도록
+			sf::Color currentColor = body.getColor();
+			body.setColor(sf::Color(currentColor.r, currentColor.g, currentColor.b,
+				static_cast<sf::Uint8>(currentColor.a * 0.9f)));
 			bloodTimer = 0.f;
 		}
 	}
 	else if (texId == "graphics/blood.png" && hp == 0)
 	{
 		SetActive(false);
+		return; // 비활성화된 좀비는 더 이상 처리하지 않음
 	}
 
-	attackTimer += dt;
-	if (texId != "graphics/blood.png")
+	// 살아있는 좀비만 플레이어를 추적하고 공격
+	if (texId != "graphics/blood.png" && player != nullptr && hp > 0)
 	{
+		// 플레이어 추적
 		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
 		SetRotation(Utils::Angle(direction));
 		SetPosition(GetPosition() + direction * speed * dt);
 
+		// HitBox 업데이트
 		hitBox.UpdateTransform(body, GetLocalBounds());
 
-		if (attackTimer > attackInterval)
+		// 공격 타이머 업데이트
+		attackTimer += dt;
+
+		// 공격 간격이 지났고, 플레이어와 충돌했을 때 데미지
+		if (attackTimer >= attackInterval)
 		{
 			if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
 			{
-				attackTimer = 0.f;
-				player->OnDamage(damage);
+				// 플레이어가 살아있을 때만 데미지
+				if (player->IsAlive())
+				{
+					attackTimer = 0.f;
+					player->OnDamage(static_cast<int>(damage));
+				}
 			}
 		}
 	}
@@ -129,7 +143,7 @@ void Zombie::SetType(Types type)
 		maxHp = 200;
 
 		speed = 50.0f;                    // float으로 명시적 지정
-		damage = 100.0f;                  // float으로 명시적 지정
+		damage = 30.f;                  // float으로 명시적 지정
 		attackInterval = 1.0f;            // float으로 명시적 지정
 		scoreValue = 50;
 		break;
@@ -137,16 +151,16 @@ void Zombie::SetType(Types type)
 		texId = "graphics/chaser.png";
 		maxHp = 100;
 		speed = 100.0f;
-		damage = 100.0f;
-		attackInterval = 1.0f;
+		damage = 25.f;
+		attackInterval = 1.5f;
 		scoreValue = 30;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
 		speed = 200;
-		damage = 20.f;
-		attackInterval = 1.f;
+		damage = 15.f;
+		attackInterval = 0.8f;
 		scoreValue = 20;
 		break;
 	case Types::Blood:
@@ -155,6 +169,7 @@ void Zombie::SetType(Types type)
 		speed = 0;
 		damage = 0.f;
 		attackInterval = 1.f;
+		scoreValue = 0;
 		break;
 	}
 }

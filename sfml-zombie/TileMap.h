@@ -33,6 +33,8 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void Stage();
+
 	void SetX(int x)
 	{
 		X = x;

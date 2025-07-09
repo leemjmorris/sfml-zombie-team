@@ -102,7 +102,6 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 
-	// UI ������Ʈ
 	if (userInterface)
 	{
 		userInterface->SetScore(score);

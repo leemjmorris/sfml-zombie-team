@@ -117,6 +117,23 @@ void TileMap::Release()
 
 void TileMap::Reset()
 {
+	Stage();
+}
+
+void TileMap::Update(float dt)
+{
+}
+
+void TileMap::Draw(sf::RenderWindow& window)
+{
+	sf::RenderStates state;
+	state.texture = texture;
+	state.transform = transform;
+	window.draw(va, state);
+}
+
+void TileMap::Stage()
+{
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
 	if (X > 30 && Y > 30)
 	{
@@ -132,16 +149,4 @@ void TileMap::Reset()
 	SetOrigin(Origins::MC);
 	SetScale({ 1.f, 1.f });
 	SetPosition({ 0.f, 0.f });
-}
-
-void TileMap::Update(float dt)
-{
-}
-
-void TileMap::Draw(sf::RenderWindow& window)
-{
-	sf::RenderStates state;
-	state.texture = texture;
-	state.transform = transform;
-	window.draw(va, state);
 }

@@ -15,7 +15,7 @@ SceneTitle::SceneTitle() : Scene(SceneIds::Title),
 	fadeDuration(1.0f),
 	fadeTimer(0.0f),
 	blinkTimer(0.0f),
-	blinkTime(1.0f),
+	blinkTime(0.5f),
 	Visible(true)
 {
 }
