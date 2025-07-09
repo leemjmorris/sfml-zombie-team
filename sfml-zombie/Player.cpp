@@ -109,6 +109,7 @@ void Player::Update(float dt)
 			++it;
 		}
 	}
+
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 	if (Utils::Magnitude(direction) > 1.f)
@@ -125,16 +126,12 @@ void Player::Update(float dt)
 	pos.y = Utils::Clamp(pos.y, mapSize.top + tileMap->GetCellSize().y, mapSize.top + heightSize - tileMap->GetCellSize().y);
 	SetPosition(pos);
 
-
 	sf::Vector2i mousePos = InputMgr::GetMousePosition();
 	sf::Vector2f mouseWorldPos = sceneGame->ScreenToWorld(mousePos);
 	look = Utils::GetNormal(mouseWorldPos - GetPosition());
 	SetRotation(Utils::Angle(look));
 
-
 	hitBox.UpdateTransform(body, GetLocalBounds());
-
-	// �� ���� �־��
 
 	shootTimer += dt;
 

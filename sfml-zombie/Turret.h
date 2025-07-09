@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Zombie.h"
 
 class Bullet;
 class SceneGame;
@@ -11,10 +12,13 @@ protected:
 	sf::Sprite body;
 	std::string texId = "graphics/turret.png";
 
-	float shootInterval = 0.f;
+	sf::Vector2f look;
+
+	float shootInterval = 1.f;
 	float shootTime = 0.f;
 
-	Bullet* bullet = nullptr;
+	std::list<Bullet*> bulletList;
+	std::list<Bullet*> bulletPool;
 	SceneGame* sceneGame = nullptr;
 
 	float attackRange = 200.f;
@@ -39,5 +43,6 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void Spawn(const sf::Vector2f& pos);
+	Zombie* FindClosestZombie();
 };
 

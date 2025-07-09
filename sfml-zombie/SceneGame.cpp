@@ -142,6 +142,16 @@ void SceneGame::Update(float dt)
 		userInterface->SetZombieCount(zombieList);
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::T))
+	{
+		turret->Spawn(player->GetPosition());
+	}
+
+	if (userInterface->GetRemainZombie() == 0)
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
+	}
+
 	if (userInterface->GetRemainZombie() == 0)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
