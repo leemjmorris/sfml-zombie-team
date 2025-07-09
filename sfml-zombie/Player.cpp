@@ -52,6 +52,7 @@ void Player::Init()
 	//SetOrigin(Origins::MC);
 	currentAmmo = 6 * ammoUpgradeMount;
 	remainAmmo = 30;
+	skill.SetPlayer(this);
 }
 
 void Player::Release()
@@ -87,6 +88,10 @@ void Player::Reset()
 	direction = { 0.f, 0.f };
 	look = { 1.0f, 0.f };
 
+	for (int i = 0; i < (int) Skill::SkillType::skillCount; i++)
+	{
+		skillTimer[i] = skill.GetCoolTime((Skill::SkillType)i) + skill.GetUseTime((Skill::SkillType)i);
+	}
 	shootTimer = 0.f;
 	hp = maxHp;
 
@@ -159,7 +164,24 @@ void Player::Update(float dt)
 			remainAmmo -= currentAmmo;
 		}
 	}
-	
+
+	for(int i = 0; i < (int)Skill::SkillType::skillCount; i++)
+	{
+		skillTimer[i] += dt;
+		if (skillTimer[i] > skill.GetUseTime((Skill::SkillType) i) && !skill.GetCanUse((Skill::SkillType) i))
+		{
+			skill.FinishSkill((Skill::SkillType) i);
+		}
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		if (skill.GetCanUse(Skill::SkillType::Dash) && !skill.IsCoolTime(skillTimer[(int)Skill::SkillType::Dash], Skill::SkillType::Dash))
+		{
+			skill.Use(Skill::SkillType::Dash);
+			skillTimer[(int)Skill::SkillType::Dash] = 0.f;
+		}
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)

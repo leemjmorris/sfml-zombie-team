@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "HitBox.h"
+#include "Skill.h"
 
 class SceneGame;
 class Bullet;
@@ -38,6 +39,9 @@ protected:
 	ItemGo* ammoItem = nullptr;
 
 	HitBox hitBox;
+
+	Skill skill;
+	float skillTimer[(int)Skill::SkillType::skillCount];
 
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;

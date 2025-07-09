@@ -60,7 +60,6 @@ void Zombie::Reset()
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
-		
 	}
 	else
 	{
