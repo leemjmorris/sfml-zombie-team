@@ -64,6 +64,9 @@ void Turret::Reset()
 		sceneGame = nullptr;
 	}
 
+	isSpawn = false;
+	spawnCount = 1;
+
 	body.setTexture(TEXTURE_MGR.Get(texId),true);
 	SetOrigin(Origins::MC);
 	SetRotation(0.f);
@@ -121,7 +124,7 @@ void Turret::Update(float dt)
 
 				look = Utils::GetNormal(zombie->GetPosition() - position);
 				SetRotation(Utils::Angle(look));
-				bullet->Fire(position + look * 20.f, look, 100.f, 50.f);
+				bullet->Fire(position + look * 20.f, look, 300.f, 20.f);
 
 				bulletList.push_back(bullet);
 				sceneGame->AddGameObject(bullet);
