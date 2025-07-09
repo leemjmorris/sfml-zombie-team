@@ -78,11 +78,11 @@ void ItemGo::Update(float dt)
 		if (spawnTime > spawnInterval)
 		{
 			isSpawn = true;
-			sceneGame->SpawnItem();
+			sceneGame->SpawnItem(this);
 			hitBox.UpdateTransform(item, GetLocalBounds());
 			if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
 			{
-				Upgrade();
+				Upgrade(type);
 			}
 			spawnTime = 0.f;
 		}
@@ -107,6 +107,15 @@ void ItemGo::Draw(sf::RenderWindow& window)
 	}
 }
 
-void ItemGo::Upgrade()
+void ItemGo::Upgrade(UpgradeType ty)
 {
+	switch (ty)
+	{
+	case ItemGo::UpgradeType::Heal:
+		break;
+	case ItemGo::UpgradeType::Ammo:
+		break;
+	default:
+		break;
+	}
 }

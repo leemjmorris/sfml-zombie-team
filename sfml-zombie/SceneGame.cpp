@@ -34,6 +34,10 @@ void SceneGame::Init()
 
 	item = (ItemGo*)AddGameObject(new ItemGo("ammopack"));
 	item->SetTexId("graphics/ammo_pickup.png");
+	item->SetType(ItemGo::UpgradeType::Ammo);
+	item2 = (ItemGo*)AddGameObject(new ItemGo("healpack"));
+	item2->SetTexId("graphics/health_pickup.png");
+	item2->SetType(ItemGo::UpgradeType::Heal);
 
 	Scene::Init();
 }
@@ -136,7 +140,7 @@ void SceneGame::SpawnZombies(int count)
 	}
 }
 
-void SceneGame::SpawnItem()
+void SceneGame::SpawnItem(ItemGo* item)
 {
 	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
 	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;

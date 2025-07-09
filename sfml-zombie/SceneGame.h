@@ -11,6 +11,7 @@ class SceneGame : public Scene
 protected:
 	Player* player = nullptr;
 	ItemGo* item = nullptr;
+	ItemGo* item2 = nullptr;
 	TileMap* tileMap = nullptr;
 
 	std::list<Zombie*> zombieList;
@@ -31,7 +32,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SpawnZombies(int count);
-	void SpawnItem();
+	void SpawnItem(ItemGo* item);
 
 	const std::list<Zombie*>& GetZombies() const 
 	{

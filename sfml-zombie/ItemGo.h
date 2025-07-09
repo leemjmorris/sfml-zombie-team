@@ -5,9 +5,15 @@
 class Player;
 class SceneGame;
 
-class ItemGo :
-    public GameObject
+class ItemGo : public GameObject
 {
+public :
+	enum class UpgradeType
+	{
+		Heal,
+		Ammo
+	};
+
 protected:
 	sf::Sprite item;
 	std::string texId;
@@ -23,11 +29,14 @@ protected:
 	Player* player;
 	SceneGame* sceneGame = nullptr;
 
+	UpgradeType type = UpgradeType::Heal;
+
 public:
 	ItemGo(const std::string& name = "");
 	virtual ~ItemGo() = default;
 
 	void SetTexId(const std::string& id) { texId = id; }
+	void SetType(UpgradeType ty) { type = ty; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
@@ -51,6 +60,6 @@ public:
 		return item.getGlobalBounds();
 	}
 
-	void Upgrade();
+	void Upgrade(UpgradeType ty);
 };
 
