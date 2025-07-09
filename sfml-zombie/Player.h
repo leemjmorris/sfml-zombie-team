@@ -100,5 +100,7 @@ public:
 
 	void AddHp(int hp) { this->hp = Utils::Clamp(this->hp + hp, 0, this->maxHp); }
 	void AddAmmo(int ammo) { this->remainAmmo += ammo; }
+	int GetCurrentAmmo() { return currentAmmo; }
+	int GetRemainAmmo() { return remainAmmo; }
 };
 

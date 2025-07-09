@@ -4,7 +4,6 @@
 #include "Zombie.h"
 #include "SceneMgr.h"
 #include "TextGo.h"
-#include "Zombie.h"
 #include <fstream>
 #include <iostream>
 
@@ -20,6 +19,7 @@ UserInterface::UserInterface()
     , highScoreFilePath("highscore.txt")
     , currentAmmo(0)
     , remainAmmo(0)
+    , remainZombie(0)
 {
 }
 
@@ -51,7 +51,6 @@ void UserInterface::Release()
 
 void UserInterface::Reset()
 {
-    // Player ���� ��������
     if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
     {
         player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
@@ -67,27 +66,23 @@ void UserInterface::Reset()
     textWaveCount->Reset();
     textZombieCount->Reset();
 
-    // ��ġ �缳��
     SetupTextPositions();
     SetupHealthBar();
 
-    // �ʱ� �ؽ�Ʈ ����
     SetScore(0);
     SetHighScore(highScore);
-    SetCurrentAmmo(0);
-    SetRemainAmmo(0);
     SetWaveCount(1);
 }
 
 void UserInterface::Update(float dt)
 {
-    // Game �������� ������Ʈ
     if (SCENE_MGR.GetCurrentSceneId() != SceneIds::Game)
         return;
 
     UpdateHealthBar();
+    SetCurrentAmmo(0);
+    SetRemainAmmo(0);
 
-    // TextGo ��ü�鵵 ������Ʈ
     if (textScore) textScore->Update(dt);
     if (textHighScore) textHighScore->Update(dt);
     if (textAmmo) textAmmo->Update(dt);
@@ -97,28 +92,43 @@ void UserInterface::Update(float dt)
 
 void UserInterface::Draw(sf::RenderWindow& window)
 {
-    // Game �������� �׸���
     if (SCENE_MGR.GetCurrentSceneId() != SceneIds::Game)
         return;
 
-    // UI View ����
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::View view = FRAMEWORK.GetWindow().getView();
-    //sf::View uiView;
-    /*uiView.setSize(windowSize);
-    uiView.setCenter(windowSize * 0.5f);*/
     window.setView(view);
 
-    // ��� TextGo ���� �׸���
     if (textScore) textScore->Draw(window);
     if (textHighScore) textHighScore->Draw(window);
     if (textAmmo) textAmmo->Draw(window);
     if (textWaveCount) textWaveCount->Draw(window);
     if (textZombieCount) textZombieCount->Draw(window);
 
-    // ü�¹ٸ� ���� �׸��� (TextGo���� Scene���� �ڵ����� �׷���)
     window.draw(healthBarBackground);
     window.draw(healthBarForeground);
+}
+
+void UserInterface::SetPosition(const sf::Vector2f& pos)
+{
+    GameObject::SetPosition(pos);
+    item.setPosition(pos);
+}
+
+void UserInterface::SetRotation(float rot)
+{
+}
+
+void UserInterface::SetScale(const sf::Vector2f& s)
+{
+}
+
+void UserInterface::SetOrigin(const sf::Vector2f& o)
+{
+}
+
+void UserInterface::SetOrigin(Origins preset)
+{
 }
 
 void UserInterface::CreateTextObjects()
@@ -130,7 +140,6 @@ void UserInterface::CreateTextObjects()
     textWaveCount = new TextGo("fonts/zombiecontrol.ttf", "UI_Wave");
     textZombieCount = new TextGo("fonts/zombiecontrol.ttf", "UI_Zombie");
 
-    // �ؽ�Ʈ �⺻ ����
     textScore->SetCharacterSize(36);
     textScore->SetFillColor(sf::Color::Yellow);
     textScore->SetString("SCORE: 0");
@@ -151,7 +160,6 @@ void UserInterface::CreateTextObjects()
     textZombieCount->SetFillColor(sf::Color::Red);
     textZombieCount->SetString("ZOMBIES: 0");
 
-    // ��� TextGo�� UI ���̾�� ����
     textScore->sortingLayer = SortingLayers::UI;
     textScore->sortingOrder = 10;
 
@@ -175,38 +183,33 @@ void UserInterface::SetupTextPositions()
 
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-    // ���� ���: ���� ���� (10, 10)
     textScore->SetPosition(sf::Vector2f(10.0f, 10.0f));
-
-    // ���� ���: �ְ� ���� (�ӽ� ��ġ, SetHighScore���� ��Ȯ�� ����)
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - 200.0f, 10.0f));
-
-    // ���� �ϴ�: ź�� ����
     textAmmo->SetPosition(sf::Vector2f(10.0f, windowSize.y - 80.0f));
-
-    // ���� �ϴ�: Wave ���� (�ӽ� ��ġ, SetWaveCount���� ��Ȯ�� ����)
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - 150.0f, windowSize.y - 80.0f));
-
-    // Wave ��: Zombie �� (�ӽ� ��ġ, SetZombieCount���� ��Ȯ�� ����)
     textZombieCount->SetPosition(sf::Vector2f(windowSize.x - 300.0f, windowSize.y - 40.0f));
+}
+
+void UserInterface::SetupAmmoImage()
+{
+    ammoImage.setTexture(TEXTURE_MGR.Get("graphics/ammo_icon.png"));
+    ammoImage.setScale({ 1.f, 1.f });
+
 }
 
 void UserInterface::SetupHealthBar()
 {
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-    // ü�¹� ũ�� �� ��ġ (ź�� ���� �ٷ� ��)
     sf::Vector2f healthBarSize(200.0f, 20.0f);
     sf::Vector2f healthBarPos(10.0f, windowSize.y - 110.0f);
 
-    // ��� (������)
     healthBarBackground.setSize(healthBarSize);
     healthBarBackground.setPosition(healthBarPos);
     healthBarBackground.setFillColor(sf::Color::Black);
     healthBarBackground.setOutlineThickness(2.0f);
     healthBarBackground.setOutlineColor(sf::Color::White);
 
-    // ���� (�ʷϻ�)
     healthBarForeground.setSize(healthBarSize);
     healthBarForeground.setPosition(healthBarPos);
     healthBarForeground.setFillColor(sf::Color::Green);
@@ -217,22 +220,18 @@ void UserInterface::UpdateHealthBar()
     if (!player)
         return;
 
-    // Player Ŭ������ GetHp()�� GetMaxHp() �޼��� ���
     float currentHp = static_cast<float>(player->GetHp());
     float maxHp = static_cast<float>(player->GetMaxHp());
 
     if (maxHp <= 0.0f) return;
 
-    // ü�� ���� ���
     float healthRatio = currentHp / maxHp;
     healthRatio = std::max(0.0f, std::min(1.0f, healthRatio));
 
-    // ü�¹� ũ�� ����
     sf::Vector2f fullSize = healthBarBackground.getSize();
     sf::Vector2f currentSize(fullSize.x * healthRatio, fullSize.y);
     healthBarForeground.setSize(currentSize);
 
-    // ü�¿� ���� ���� ����
     if (healthRatio > 0.6f)
         healthBarForeground.setFillColor(sf::Color::Green);
     else if (healthRatio > 0.3f)
@@ -282,7 +281,6 @@ void UserInterface::SetScore(int score)
 
     textScore->SetString("SCORE: " + std::to_string(score));
 
-    // ���ο� ������ �ְ� ������ �Ѵ��� Ȯ��
     UpdateHighScore(score);
 }
 
@@ -292,7 +290,6 @@ void UserInterface::SetHighScore(int highScore)
 
     textHighScore->SetString("HIGH: " + std::to_string(highScore));
 
-    // ���� ������ ���� ��ġ ������
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textHighScore->GetLocalBounds();
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, 10.0f));
@@ -301,13 +298,13 @@ void UserInterface::SetHighScore(int highScore)
 
 void UserInterface::SetCurrentAmmo(int currentAmmo)
 {
-    this->currentAmmo = currentAmmo;
+    this->currentAmmo = player->GetCurrentAmmo();
     UpdateAmmoDisplay();
 }
 
 void UserInterface::SetRemainAmmo(int remainAmmo)
 {
-    this->remainAmmo = remainAmmo;
+    this->remainAmmo = player->GetRemainAmmo();
     UpdateAmmoDisplay();
 }
 
@@ -315,7 +312,6 @@ void UserInterface::UpdateAmmoDisplay()
 {
     if (!textAmmo) return;
 
-    // "6/24" ���·� ǥ��
     textAmmo->SetString(std::to_string(currentAmmo) + "/" + std::to_string(remainAmmo));
 }
 
@@ -325,7 +321,6 @@ void UserInterface::SetWaveCount(int waveCount)
 
     textWaveCount->SetString("WAVE: " + std::to_string(waveCount));
 
-    // ���� ������ ���� ��ġ ������
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
     sf::FloatRect bounds = textWaveCount->GetLocalBounds();
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 30.0f, windowSize.y - 80.0f));
