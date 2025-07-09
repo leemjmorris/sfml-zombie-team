@@ -188,7 +188,6 @@ void Player::Update(float dt)
 	}
 	if(useType != Skill::SkillType::None)
 	{
-		std::cout << (int)useType << std::endl;
 		if (skill.GetCanUse(useType) && !skill.IsCoolTime(skillTimer[(int)useType], useType))
 		{
 			skill.Use(useType);
