@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "SceneMgr.h"
 #include "TextGo.h"
+#include "Zombie.h"
 #include <fstream>
 #include <iostream>
 
@@ -75,7 +76,7 @@ void UserInterface::Reset()
     SetCurrentAmmo(0);
     SetRemainAmmo(0);
     SetWaveCount(1);
-    SetZombieCount(0);
+
 }
 
 void UserInterface::Update(float dt)
@@ -331,13 +332,20 @@ void UserInterface::SetWaveCount(int waveCount)
     textWaveCount->SetOrigin(Origins::TL);
 }
 
-void UserInterface::SetZombieCount(int zombieCount)
+void UserInterface::SetZombieCount(const std::list<Zombie*>& zombieList)
 {
+    remainZombie = 0;
+    for (auto zombie : zombieList)
+    {
+        if (zombie->GetCurrentType() != "graphics/blood.png")
+        {
+            remainZombie++;
+        }
+    }
+
     if (!textZombieCount) return;
+    textZombieCount->SetString("ZOMBIES: " + std::to_string(remainZombie));
 
-    textZombieCount->SetString("ZOMBIES: " + std::to_string(zombieCount));
-
-    // Wave 텍스트 옆에 위치 조정
     if (textWaveCount)
     {
         sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();

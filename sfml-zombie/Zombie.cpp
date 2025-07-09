@@ -172,18 +172,18 @@ void Zombie::OnDamage(int damage)
 {
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
 
-	if (hp == 0)
+	if (hp == 0 && type != Types::Blood)
 	{
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (sceneGame)
+		{
+			sceneGame->AddScore(scoreValue);
+		}
+
 		SetType(Types::Blood);
 		hp = maxHp;
 		body.setTexture(TEXTURE_MGR.Get("graphics/blood.png"), true);
 		sortingOrder = -1;
-		// Scene을 통해 점수 추가
-		Scene* currentScene = SCENE_MGR.GetCurrentScene();
-		if (currentScene)
-		{
-			currentScene->AddScore(scoreValue);
-		}
 	}
 }
 

@@ -1,8 +1,12 @@
 #pragma once
 #include "GameObject.h"
+#include <string.h>
+#include <iostream>
+
 
 class Player;
 class TextGo;
+class Zombie;
 
 class UserInterface : public GameObject
 {
@@ -40,6 +44,7 @@ protected:
     void LoadHighScore();
     void SaveHighScore();
     void UpdateHighScore(int currentScore);
+    int remainZombie;
 
 public:
     UserInterface();
@@ -60,7 +65,7 @@ public:
     void SetCurrentAmmo(int currentAmmo);
     void SetRemainAmmo(int remainAmmo);
     void SetWaveCount(int waveCount);
-    void SetZombieCount(int zombieCount);
+    void SetZombieCount(const std::list<Zombie*>& zombieList);
 
     // TextGo 객체들 접근 함수 (SceneGame에서 Scene에 추가하기 위해)
     TextGo* GetScoreText() const { return textScore; }
@@ -68,4 +73,6 @@ public:
     TextGo* GetAmmoText() const { return textAmmo; }
     TextGo* GetWaveCountText() const { return textWaveCount; }
     TextGo* GetZombieCountText() const { return textZombieCount; }
+
+    int GetRemainZombie() { return remainZombie; }
 };

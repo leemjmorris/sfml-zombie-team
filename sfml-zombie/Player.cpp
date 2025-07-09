@@ -142,11 +142,7 @@ void Player::Update(float dt)
 	{
 		shootTimer = 0.f;
 		Shoot();
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
-	}
+	}	
 }
 
 void Player::Draw(sf::RenderWindow& window)

@@ -80,11 +80,11 @@ void SceneGame::Enter()
 	}
 	SpawnZombies(wave);
 
-	score = 0; //LMJ : Updated for the UI making
-	if (userInterface)
-	{
-		userInterface->SetScore(0);
-	}
+	//score = 0; //LMJ : Updated for the UI making
+	//if (userInterface)
+	//{
+	//	userInterface->SetScore(0);
+	//}
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -110,10 +110,26 @@ void SceneGame::Update(float dt)
 	Scene::Update(dt);
 
 	if (userInterface)
-	{
-		userInterface->SetScore(score);
-		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
-	}
+    {
+        userInterface->SetScore(score);
+        userInterface->SetZombieCount(zombieList);  // vector로 전달
+        
+        // 살아있는 좀비가 0이 되면 다음 씬으로
+        int aliveCount = 0;
+        for (auto* zombie : zombieList)
+        {
+            if (zombie && zombie->GetActive() && zombie->GetType() != Zombie::Types::Blood)
+            {
+                aliveCount++;
+            }
+        }
+        
+        if (aliveCount == 0)
+        {
+            SCENE_MGR.ChangeScene(SceneIds::Upgrade);
+        }
+    }
+
 
 	auto it = zombieList.begin();
 	while (it != zombieList.end())
@@ -139,7 +155,12 @@ void SceneGame::Update(float dt)
 	if (userInterface)
 	{
 		userInterface->SetScore(score);
-		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
+		userInterface->SetZombieCount(zombieList);
+	}
+
+	if (userInterface->GetRemainZombie() == 0)
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 	}
 
 	//userInterface->SetScore(score);
@@ -220,7 +241,6 @@ void SceneGame::AddScore(int points)
 {
 	score += points;
 
-	// UserInterface�� ���� ������Ʈ
 	if (userInterface)
 	{
 		userInterface->SetScore(score);
