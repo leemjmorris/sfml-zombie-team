@@ -92,6 +92,8 @@ void Player::Reset()
 	{
 		skillTimer[i] = skill.GetCoolTime((Skill::SkillType)i) + skill.GetUseTime((Skill::SkillType)i);
 	}
+	skill.Reset();
+
 	shootTimer = 0.f;
 	hp = maxHp;
 

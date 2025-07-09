@@ -15,6 +15,14 @@ Skill::Skill(SkillType ty)
 	coolTime[(int)SkillType::FastShoot] = 5.f;
 }
 
+void Skill::Reset()
+{
+	for (int i = 0; i < (int)SkillType::skillCount; i++)
+	{
+		CanUse[i] = true;
+	}
+}
+
 void Skill::Use(SkillType ty)
 {
 	switch (ty)

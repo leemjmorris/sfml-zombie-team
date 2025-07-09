@@ -32,6 +32,8 @@ public:
 	Skill(SkillType ty = SkillType::None);
 	~Skill() = default;
 
+	void Reset();
+
 	void SetPlayer(Player* player) { this->player = player; }
 
 	void SetUseTime(float ut, SkillType ty) { skillUsingTime[(int)ty] = ut; }
