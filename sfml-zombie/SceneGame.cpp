@@ -41,7 +41,7 @@ void SceneGame::Init()
 	}
 
 	ammoIcon = (UserInterface*)AddGameObject(new UserInterface("AmmoIcon"));
-	ammoIcon->SetTexId
+	//ammoIcon->SetTexId
 
 	item = (ItemGo*)AddGameObject(new ItemGo("AmmoPack"));
 	item->SetTexId("graphics/ammo_pickup.png");

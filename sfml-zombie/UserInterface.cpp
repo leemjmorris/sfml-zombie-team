@@ -7,8 +7,8 @@
 #include <fstream>
 #include <iostream>
 
-UserInterface::UserInterface()
-    : GameObject("UserInterface")
+UserInterface::UserInterface(const std::string& name)
+    : GameObject(name)
     , textScore(nullptr)
     , textHighScore(nullptr)
     , textAmmo(nullptr)
@@ -112,7 +112,7 @@ void UserInterface::Draw(sf::RenderWindow& window)
 void UserInterface::SetPosition(const sf::Vector2f& pos)
 {
     GameObject::SetPosition(pos);
-    item.setPosition(pos);
+    //item.setPosition(pos);
 }
 
 void UserInterface::SetRotation(float rot)

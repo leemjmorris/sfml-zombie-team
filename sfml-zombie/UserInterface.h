@@ -45,7 +45,7 @@ protected:
     int remainZombie;
 
 public:
-    UserInterface();
+    UserInterface(const std::string& name = "");
     ~UserInterface() override;
 
     bool isGameOver = false;
