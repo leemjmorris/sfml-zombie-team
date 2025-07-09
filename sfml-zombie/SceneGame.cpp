@@ -25,8 +25,9 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ammo_pickup.png");
 	texIds.push_back("graphics/health_pickup.png");
 	texIds.push_back("graphics/turret.png");
-	fontIds.push_back("fonts/zombiecontrol.ttf");
 	texIds.push_back("graphics/blood.png");
+	texIds.push_back("graphics/ammo_icon.png");
+	fontIds.push_back("fonts/zombiecontrol.ttf");
 
 	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
@@ -38,6 +39,9 @@ void SceneGame::Init()
 		zombie->SetActive(false);
 		zombiePool.push_back(zombie);
 	}
+
+	ammoIcon = (UserInterface*)AddGameObject(new UserInterface("AmmoIcon"));
+	ammoIcon->SetTexId
 
 	item = (ItemGo*)AddGameObject(new ItemGo("AmmoPack"));
 	item->SetTexId("graphics/ammo_pickup.png");

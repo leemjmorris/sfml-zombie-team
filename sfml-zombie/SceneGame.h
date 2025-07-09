@@ -14,6 +14,7 @@ protected:
 	Player* player = nullptr;
 	Turret* turret = nullptr;
 	UserInterface* userInterface = nullptr;
+	UserInterface* ammoIcon = nullptr;
 	ItemGo* item = nullptr;
 	ItemGo* item2 = nullptr;
 	TileMap* tileMap = nullptr;

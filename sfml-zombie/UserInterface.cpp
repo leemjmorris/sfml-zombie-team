@@ -19,6 +19,7 @@ UserInterface::UserInterface()
     , highScoreFilePath("highscore.txt")
     , currentAmmo(0)
     , remainAmmo(0)
+    , remainZombie(0)
 {
 }
 
@@ -108,6 +109,28 @@ void UserInterface::Draw(sf::RenderWindow& window)
     window.draw(healthBarForeground);
 }
 
+void UserInterface::SetPosition(const sf::Vector2f& pos)
+{
+    GameObject::SetPosition(pos);
+    item.setPosition(pos);
+}
+
+void UserInterface::SetRotation(float rot)
+{
+}
+
+void UserInterface::SetScale(const sf::Vector2f& s)
+{
+}
+
+void UserInterface::SetOrigin(const sf::Vector2f& o)
+{
+}
+
+void UserInterface::SetOrigin(Origins preset)
+{
+}
+
 void UserInterface::CreateTextObjects()
 {
 
@@ -161,14 +184,17 @@ void UserInterface::SetupTextPositions()
     sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
     textScore->SetPosition(sf::Vector2f(10.0f, 10.0f));
-
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - 200.0f, 10.0f));
-
     textAmmo->SetPosition(sf::Vector2f(10.0f, windowSize.y - 80.0f));
-
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - 150.0f, windowSize.y - 80.0f));
-
     textZombieCount->SetPosition(sf::Vector2f(windowSize.x - 300.0f, windowSize.y - 40.0f));
+}
+
+void UserInterface::SetupAmmoImage()
+{
+    ammoImage.setTexture(TEXTURE_MGR.Get("graphics/ammo_icon.png"));
+    ammoImage.setScale({ 1.f, 1.f });
+
 }
 
 void UserInterface::SetupHealthBar()

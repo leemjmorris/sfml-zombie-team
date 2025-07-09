@@ -7,40 +7,38 @@
 class Player;
 class TextGo;
 class Zombie;
+class SceneGame;
 
 class UserInterface : public GameObject
 {
 protected:
-    // UI �ؽ�Ʈ�� (TextGo �����ͷ� ����)
-    TextGo* textScore;         // ���� ����
-    TextGo* textHighScore;     // �ְ� ����
-    TextGo* textAmmo;          // ź�� ���� (���ļ� ǥ��)
-    TextGo* textWaveCount;     // ���� Wave
-    TextGo* textZombieCount;   // ���� Zombie ��
+    TextGo* textScore;
+    TextGo* textHighScore;
+    TextGo* textAmmo;
+    TextGo* textWaveCount;
+    TextGo* textZombieCount;
 
-    // ü�¹� ����
-    sf::RectangleShape healthBarBackground;  // ü�¹� ���
-    sf::RectangleShape healthBarForeground;  // ü�¹� ����
+    sf::Sprite ammoImage;
+    sf::RectangleShape healthBarBackground;
+    sf::RectangleShape healthBarForeground;
 
-    // Player ����
+    std::string texId;
+
     Player* player;
 
-    // �ְ� ���� ����
     int highScore;
     std::string highScoreFilePath;
 
-    // ź�� ���� ����
-    int currentAmmo;    // ���� źâ ź��
-    int remainAmmo;     // ��ü ź��
+    int currentAmmo;
+    int remainAmmo;
 
-    // UI ���� �Լ���
-    void CreateTextObjects();   // TextGo ��ü�� ����
+    void CreateTextObjects();
     void SetupTextPositions();
+    void SetupAmmoImage();
     void SetupHealthBar();
     void UpdateHealthBar();
     void UpdateAmmoDisplay();
 
-    // �ְ� ���� ���� ����
     void LoadHighScore();
     void SaveHighScore();
     void UpdateHighScore(int currentScore);
@@ -59,14 +57,19 @@ public:
     void Update(float dt) override;
     void Draw(sf::RenderWindow& window) override;
 
-    // ������ ���� �Լ���
+    void SetTexId(const std::string& id) { texId = id; }
+    void SetPosition(const sf::Vector2f& pos) override;
+    void SetRotation(float rot) override;
+    void SetScale(const sf::Vector2f& s) override;
+    void SetOrigin(const sf::Vector2f& o) override;
+    void SetOrigin(Origins preset) override;
+
     void SetScore(int score);
     void SetHighScore(int highScore);
     void SetCurrentAmmo(int currentAmmo);
     void SetRemainAmmo(int remainAmmo);
     void SetWaveCount(int waveCount);
 
-    // TextGo ��ü�� ���� �Լ� (SceneGame���� Scene�� �߰��ϱ� ����)
     TextGo* GetScoreText() const { return textScore; }
     TextGo* GetHighScoreText() const { return textHighScore; }
     TextGo* GetAmmoText() const { return textAmmo; }
