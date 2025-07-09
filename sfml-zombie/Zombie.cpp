@@ -160,6 +160,26 @@ void Zombie::Update(float dt)
 	{
 		SetType(type);
 	}
+
+	if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+	{
+		speed = 0.f;
+	}
+	else
+	{
+		if (texId == "graphics/bloater.png")
+		{
+			speed = 50.f;
+		}
+		if (texId == "graphics/chaser.png")
+		{
+			speed = 100.f;
+		}
+		if (texId == "graphics/crawler.png")
+		{
+			speed = 150.f;
+		}
+	}
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -175,27 +195,34 @@ void Zombie::SetType(Types type)
 	{
 	case Types::Bloater:
 		texId = "graphics/bloater.png";
-		maxHp = 200;
+		maxHp = 150;
 		speed = 50.0f;                    // float으로 명시적 지정
-		damage = 100.0f;                  // float으로 명시적 지정
+		damage = 40.0f;                  // float으로 명시적 지정
 		attackInterval = 1.0f;            // float으로 명시적 지정
-		scoreValue = 50;
+		scoreValue = 30;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
 		speed = 100.0f;
-		damage = 100.0f;
+		damage = 25.0f;
 		attackInterval = 1.0f;
-		scoreValue = 30;
+		scoreValue = 20;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
-		speed = 200;
+		speed = 150.f;
 		damage = 20.f;
 		attackInterval = 1.f;
-		scoreValue = 20;
+		scoreValue = 10;
+		break;
+	case Types::Boss:
+		texId = "graphics/boss.png";
+		maxHp = 100000000;
+		speed = 0.f;
+		damage = 100.f;
+		attackInterval = 0.f;
 		break;
 	case Types::Blood:
 		texId = "graphics/blood.png";
@@ -224,6 +251,16 @@ void Zombie::OnDamage(int damage)
 		hp = maxHp;
 		body.setTexture(TEXTURE_MGR.Get("graphics/blood.png"), true);
 		sortingOrder = -1;
+	}
+	
+	if (GetCurrentType() == "graphics/boss.png")
+	{
+		scoreValue += 15;
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (sceneGame)
+		{
+			sceneGame->AddScore(scoreValue);
+		}
 	}
 }
 

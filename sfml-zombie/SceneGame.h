@@ -46,6 +46,7 @@ public:
 	int GetScore() const { return score; }
 
 	void SpawnZombies(int count);
+	void SpawnBossZombies();
 	void SpawnItem(ItemGo* item);
 
 	const std::list<Zombie*>& GetZombies() const 

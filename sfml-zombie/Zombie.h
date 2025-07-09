@@ -13,6 +13,7 @@ public:
 		Bloater,
 		Chaser,
 		Crawler,
+		Boss,
 		Blood,
 	};
 
