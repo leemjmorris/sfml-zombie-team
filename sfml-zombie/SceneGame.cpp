@@ -142,6 +142,11 @@ void SceneGame::Update(float dt)
 		userInterface->SetZombieCount(static_cast<int>(zombieList.size()));
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::T))
+	{
+		turret->Spawn(player->GetPosition());
+	}
+
 	//userInterface->SetScore(score);
 	////userInterface->SetWaveCount(currentWave); LMJ: Will Add this when Wave is merged together.
 	//userInterface->SetZombieCount(zombieList.size());
