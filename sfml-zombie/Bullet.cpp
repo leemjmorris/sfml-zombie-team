@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "Zombie.h"
+#include "Player.h"
 
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
@@ -45,6 +46,8 @@ void Bullet::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 1;
+
+	BulletSetType(type);
 }
 
 void Bullet::Release()
@@ -54,6 +57,7 @@ void Bullet::Release()
 void Bullet::Reset()
 {
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	player = (Player*)sceneGame->FindGameObject("Player");
 
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::ML);
@@ -75,18 +79,30 @@ void Bullet::Update(float dt)
 	const auto& list = sceneGame->GetZombies();
 	for (const auto zombie : list)
 	{
-		if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
+		if (BulletGetType() == "graphics/bullet.png")
 		{
-			if (zombie->GetCurrentType() != "graphics/blood.png")
+			if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
 			{
-				SetActive(false);
-				zombie->OnDamage(damage);
+				if (zombie->GetCurrentType() != "graphics/blood.png")
+				{
+					SetActive(false);
+					zombie->OnDamage(damage);
+				}
+				else
+				{
+					SetActive(true);
+				}
+				break;
 			}
-			else
-			{
-				SetActive(true);
-			}
-			break;
+		}
+	}
+
+	if (BulletGetType() == "graphics/bossbullet.png")
+	{
+		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+		{
+			SetActive(false);
+			player->OnDamage(damage);
 		}
 	}
 }
@@ -105,4 +121,18 @@ void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int
 	damage = d;
 
 	SetRotation(Utils::Angle(direction));
+}
+
+void Bullet::BulletSetType(BulletType type)
+{
+	this->type = type;
+	switch(this->type)
+	{
+	case BulletType::bullet:
+		texId = "graphics/bullet.png";
+		break;
+	case BulletType::bossbullet:
+		texId = "graphics/bossbullet.png";
+		break;
+	}
 }

@@ -28,7 +28,11 @@ void SceneGame::Init()
 	texIds.push_back("graphics/turret.png");
 	texIds.push_back("graphics/blood.png");
 	texIds.push_back("graphics/ammo_icon.png");
+	texIds.push_back("graphics/boss.png");
+	texIds.push_back("graphics/bossbullet.png");
+
 	fontIds.push_back("fonts/zombiecontrol.ttf");
+	
 
 	tileMap = (TileMap*)AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
@@ -80,6 +84,7 @@ void SceneGame::Enter()
 	Scene::Enter();
 	if (wave == 20)
 	{
+		SpawnBossZombies();
 		wave = 0;
 		itemSpawnDistance = 240.f;
 		zombieSpawnDistance = 90.f;
@@ -91,6 +96,7 @@ void SceneGame::Enter()
 		zombieSpawnDistance += 140.f;
 	}
 	SpawnZombies(wave);
+	
 
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
@@ -248,14 +254,46 @@ void SceneGame::SpawnZombies(int count)
 		{
 			sf::Vector2f unitPos = Utils::RandomOnUnitCircle();
 			spawnPos = unitPos * zombieSpawnDistance + player->GetPosition();
-		} 
-		while (spawnPos.x < mapSize.left + tileMap->GetCellSize().x ||
+		} while (spawnPos.x < mapSize.left + tileMap->GetCellSize().x ||
 			spawnPos.x > mapSize.left + mapSize.width - tileMap->GetCellSize().x ||
 			spawnPos.y < mapSize.top + tileMap->GetCellSize().y ||
 			spawnPos.y > mapSize.top + mapSize.height - tileMap->GetCellSize().y);
 		zombie->SetPosition(spawnPos);
 		zombieList.push_back(zombie);
 	}
+}
+
+void SceneGame::SpawnBossZombies()
+{
+	Zombie* zombie = nullptr;
+	if (zombiePool.empty())
+	{
+		zombie = (Zombie*)AddGameObject(new Zombie());
+		zombie->Init();
+	}
+	else
+	{
+		zombie = zombiePool.front();
+		zombiePool.pop_front();
+		zombie->SetActive(true);
+	}
+	zombie->SetType(Zombie::Types::Boss);
+	zombie->Reset();
+
+	float widthSize = tileMap->GetCellSize().x * tileMap->GetCellCount().x;
+	float heightSize = tileMap->GetCellSize().y * tileMap->GetCellCount().y;
+	sf::FloatRect mapSize({ -widthSize * 0.5f, -heightSize * 0.5f }, { widthSize, heightSize });
+	sf::Vector2f spawnPos = player->GetPosition();
+	do
+	{
+		sf::Vector2f unitPos = Utils::RandomOnUnitCircle();
+		spawnPos = unitPos * zombieSpawnDistance + player->GetPosition();
+	} while (spawnPos.x < mapSize.left + tileMap->GetCellSize().x ||
+		spawnPos.x > mapSize.left + mapSize.width - tileMap->GetCellSize().x ||
+		spawnPos.y < mapSize.top + tileMap->GetCellSize().y ||
+		spawnPos.y > mapSize.top + mapSize.height - tileMap->GetCellSize().y);
+	zombie->SetPosition(spawnPos);
+	zombieList.push_back(zombie);
 }
 
 void SceneGame::SpawnItem(ItemGo* item)

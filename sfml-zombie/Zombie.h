@@ -4,6 +4,7 @@
 
 class Player;
 class SceneGame;
+class Bullet;
 
 class Zombie : public GameObject
 {
@@ -13,6 +14,7 @@ public:
 		Bloater,
 		Chaser,
 		Crawler,
+		Boss,
 		Blood,
 	};
 
@@ -28,6 +30,7 @@ protected:
 	std::string texId;
 
 	sf::Vector2f direction;
+	sf::Vector2f fireOffset;
 
 	int maxHp = 0;
 	float speed = 0.f;
@@ -37,9 +40,16 @@ protected:
 	float attackTimer = 0.f;
 	float bloodTimer = 0.f;
 	float bloodTimerMax = 1.f;
+	
+	int bossScore = 0;
+	int accumulatedDamage = 0;
+
+	std::list<Bullet*> bulletList;
+	std::list<Bullet*> bulletPool;
 
 	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
+	Bullet* bullet = nullptr;
 	std::list<Zombie*> zombieList;
 
 	HitBox hitBox;
@@ -86,5 +96,6 @@ public:
 	void OnDamage(int damage);
 
 	Types GetType() const { return type; }
-};
 
+	void Shoot();
+};

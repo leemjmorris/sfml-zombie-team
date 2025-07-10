@@ -54,6 +54,7 @@ public:
 	int GetScore() const { return score; }
 
 	void SpawnZombies(int count);
+	void SpawnBossZombies();
 	void SpawnItem(ItemGo* item);
 
 	//LMJ: I will use this when BOSS is added.

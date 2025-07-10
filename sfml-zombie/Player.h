@@ -47,12 +47,14 @@ protected:
 	ItemGo* ammoItem = nullptr;
 
 	HitBox hitBox;
+	Bullet* bullet;
 
 	Skill skill;
 	float skillTimer[(int)Skill::SkillType::skillCount];
 
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
+
 
 	float shootInterval = 1.f;
 	float shootTimer = 0.f;

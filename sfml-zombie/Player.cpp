@@ -53,6 +53,11 @@ void Player::Init()
 	fireOffset = { 2.f, 1.1f };
 	currentAmmo = 6 * ammoUpgradeMount;
 	remainAmmo = 30;
+	bullet = new Bullet();
+	if (bullet != nullptr)
+	{
+		bullet->BulletSetType(Bullet::BulletType::bullet);
+	}
 	skill.SetPlayer(this);
 }
 
@@ -154,6 +159,7 @@ void Player::Update(float dt)
 
 		if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval)
 		{
+			
 			shootTimer = 0.f;
 			Shoot();
 			currentAmmo--;

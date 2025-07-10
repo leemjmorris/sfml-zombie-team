@@ -2,6 +2,7 @@
 #include "Zombie.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "Bullet.h"
 
 Zombie::Zombie(const std::string& name)
 	: GameObject(name)
@@ -49,6 +50,11 @@ void Zombie::Init()
 
 
 	SetType(type);
+	bullet = new Bullet();
+	if (bullet != nullptr)
+	{
+		bullet->BulletSetType(Bullet::BulletType::bossbullet);
+	}
 }
 
 void Zombie::Release()
@@ -71,6 +77,12 @@ void Zombie::Reset()
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
+	for (Bullet* bullet : bulletList)
+	{
+		bullet->SetActive(false);
+		bulletPool.push_back(bullet);
+	}
+	bulletList.clear();
 	hp = maxHp;
 	attackTimer = 0.f;
 	bloodTimer = 0.f;
@@ -79,6 +91,20 @@ void Zombie::Reset()
 
 void Zombie::Update(float dt)
 {
+	auto it = bulletList.begin();
+	while (it != bulletList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			bulletPool.push_back(*it);
+			it = bulletList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
 	bloodTimer += dt;
 
 	if (texId == "graphics/blood.png" && hp > 0)
@@ -159,6 +185,26 @@ void Zombie::Update(float dt)
 	{
 		SetType(type);
 	}
+
+	if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+	{
+		speed = 0.f;
+	}
+	else
+	{
+		if (texId == "graphics/bloater.png")
+		{
+			speed = 50.f;
+		}
+		if (texId == "graphics/chaser.png")
+		{
+			speed = 100.f;
+		}
+		if (texId == "graphics/crawler.png")
+		{
+			speed = 150.f;
+		}
+	}
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -174,27 +220,34 @@ void Zombie::SetType(Types type)
 	{
 	case Types::Bloater:
 		texId = "graphics/bloater.png";
-		maxHp = 200;
-		speed = 50.0f;                    // float으로 명시적 지정
-		damage = 100.0f;                  // float으로 명시적 지정
-		attackInterval = 1.0f;            // float으로 명시적 지정
-		scoreValue = 50;
+		maxHp = 150;
+		speed = 50.0f;
+		damage = 40.0f;
+		attackInterval = 1.0f;
+		scoreValue = 30;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
 		speed = 100.0f;
-		damage = 100.0f;
+		damage = 25.0f;
 		attackInterval = 1.0f;
-		scoreValue = 30;
+		scoreValue = 20;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
-		speed = 200;
+		speed = 150.f;
 		damage = 20.f;
 		attackInterval = 1.f;
-		scoreValue = 20;
+		scoreValue = 10;
+		break;
+	case Types::Boss:
+		texId = "graphics/boss.png";
+		maxHp = 100000000;
+		speed = 150.f;
+		damage = 99.f;
+		attackInterval = 0.f;
 		break;
 	case Types::Blood:
 		texId = "graphics/blood.png";
@@ -224,5 +277,50 @@ void Zombie::OnDamage(int damage)
 		body.setTexture(TEXTURE_MGR.Get("graphics/blood.png"), true);
 		sortingOrder = -1;
 	}
+	
+	if (GetCurrentType() == "graphics/boss.png")
+	{
+		scoreValue = 15;
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (sceneGame)
+		{
+			sceneGame->AddScore(scoreValue);
+		}
+		accumulatedDamage += damage;
+
+		while (accumulatedDamage >= 150)
+		{
+			Shoot();
+			Shoot();
+			Shoot();
+			Shoot();
+			Shoot();
+			accumulatedDamage -= 150;
+		}
+	}
 }
 
+void Zombie::Shoot()
+{
+	Bullet* bullet = nullptr;
+	if (bulletPool.empty())
+	{
+		bullet = new Bullet();
+		bullet->Init();
+	}
+	else
+	{
+		bullet = bulletPool.front();
+		bulletPool.pop_front();
+		bullet->SetActive(true);
+	}
+	bullet->BulletSetType(Bullet::BulletType::bossbullet);
+	bullet->Reset();
+	sf::Transform t;
+	t.rotate(GetRotation());
+	sf::Vector2f worldFireOffset = t.transformPoint(fireOffset);
+	bullet->Fire(position + worldFireOffset * 10.f, direction, 300.f, 20);
+
+	bulletList.push_back(bullet);
+	sceneGame->AddGameObject(bullet);
+}
