@@ -3,6 +3,7 @@
 #include "HitBox.h"
 
 class SceneGame;
+class Player;
 
 class Bullet : public GameObject
 {
@@ -22,6 +23,7 @@ protected:
 	int damage = 0;
 
 	HitBox hitBox;
+	Player* player;
 
 	SceneGame* sceneGame = nullptr;
 

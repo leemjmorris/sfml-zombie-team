@@ -42,6 +42,7 @@ protected:
 	float bloodTimerMax = 1.f;
 	
 	int bossScore = 0;
+	int accumulatedDamage = 0;
 
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
@@ -98,4 +99,3 @@ public:
 
 	void Shoot();
 };
-

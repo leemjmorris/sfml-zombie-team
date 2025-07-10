@@ -206,14 +206,6 @@ void Zombie::Update(float dt)
 			speed = 150.f;
 		}
 	}
-
-	if (texId == "graphics/boss.png" && hp > 0)
-	{
-		if (attackTimer >= attackInterval)
-		{
-			Shoot();
-		}
-	}
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -254,7 +246,7 @@ void Zombie::SetType(Types type)
 	case Types::Boss:
 		texId = "graphics/boss.png";
 		maxHp = 100000000;
-		speed = 100.f;
+		speed = 150.f;
 		damage = 99.f;
 		attackInterval = 0.f;
 		break;
@@ -295,6 +287,17 @@ void Zombie::OnDamage(int damage)
 		{
 			sceneGame->AddScore(scoreValue);
 		}
+		accumulatedDamage += damage;
+
+		while (accumulatedDamage >= 150)
+		{
+			Shoot();
+			Shoot();
+			Shoot();
+			Shoot();
+			Shoot();
+			accumulatedDamage -= 150;
+		}
 	}
 }
 
@@ -312,13 +315,12 @@ void Zombie::Shoot()
 		bulletPool.pop_front();
 		bullet->SetActive(true);
 	}
-
+	bullet->BulletSetType(Bullet::BulletType::bossbullet);
 	bullet->Reset();
-
 	sf::Transform t;
 	t.rotate(GetRotation());
 	sf::Vector2f worldFireOffset = t.transformPoint(fireOffset);
-	bullet->Fire(position + worldFireOffset * 10.f, direction, 150.f, 20);
+	bullet->Fire(position + worldFireOffset * 10.f, direction, 300.f, 20);
 
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);

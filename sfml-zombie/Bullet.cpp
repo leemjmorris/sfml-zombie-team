@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "Zombie.h"
+#include "Player.h"
 
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
@@ -56,6 +57,7 @@ void Bullet::Release()
 void Bullet::Reset()
 {
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	player = (Player*)sceneGame->FindGameObject("Player");
 
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::ML);
@@ -93,21 +95,14 @@ void Bullet::Update(float dt)
 				break;
 			}
 		}
-		if (BulletGetType() == "graphics/bossbullet.png")
+	}
+
+	if (BulletGetType() == "graphics/bossbullet.png")
+	{
+		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
 		{
-			if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect))
-			{
-				if (zombie->GetCurrentType() != "graphics/blood.png")
-				{
-					SetActive(false);
-					zombie->OnDamage(damage);
-				}
-				else
-				{
-					SetActive(true);
-				}
-				break;
-			}
+			SetActive(false);
+			player->OnDamage(damage);
 		}
 	}
 }
