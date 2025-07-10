@@ -6,6 +6,7 @@
 #include "ItemGo.h"
 #include "UserInterface.h"
 #include "TextGo.h"
+#include "SpriteGo.h"
 #include "Turret.h"
 
 SceneGame::SceneGame()
@@ -40,8 +41,12 @@ void SceneGame::Init()
 		zombiePool.push_back(zombie);
 	}
 
-	ammoIcon = (UserInterface*)AddGameObject(new UserInterface("AmmoIcon"));
-	//ammoIcon->SetTexId
+	
+	ammoIcon = (SpriteGo*)AddGameObject(new SpriteGo("AmmoIcon"));
+	ammoIcon->sortingLayer = SortingLayers::UI;
+	ammoIcon->sortingOrder = 0;
+	ammoIcon->SetTextureId("graphics/ammo_icon.png");
+	ammoIcon->SetScale({ 1.f, 1.f });
 
 	item = (ItemGo*)AddGameObject(new ItemGo("AmmoPack"));
 	item->SetTexId("graphics/ammo_pickup.png");
@@ -52,10 +57,13 @@ void SceneGame::Init()
 
 	userInterface = (UserInterface*)AddGameObject(new UserInterface());
 
+	sceneOverlay = (SceneOverlay*)AddGameObject(new SceneOverlay("SceneOverlay"));
+
 	Scene::Init();
 	wave = 0;
 	itemSpawnDistance = 240.f;
 	zombieSpawnDistance = 90.f;
+
 }
 
 void SceneGame::Enter()
@@ -84,11 +92,6 @@ void SceneGame::Enter()
 	}
 	SpawnZombies(wave);
 
-	//score = 0; //LMJ : Updated for the UI making
-	//if (userInterface)
-	//{
-	//	userInterface->SetScore(0);
-	//}
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -111,58 +114,92 @@ void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 
-	Scene::Update(dt);
-
-	if (userInterface)
+	// �������� ���� ó�� (�׻� ���� üũ)
+	if (sceneOverlay)
 	{
-		userInterface->SetScore(score);
-		userInterface->SetZombieCount(zombieList);
-	}
-
-	auto it = zombieList.begin();
-	while (it != zombieList.end())
-	{
-		if (!(*it)->GetActive())
+		// 1. GameOver üũ - �÷��̾� HP�� 0�� ��
+		if (player && player->GetHp() <= 0 && !sceneOverlay->IsVisible())
 		{
-			zombiePool.push_back(*it);
-			it = zombieList.erase(it);
+			sceneOverlay->SetScore(score);
+			if (userInterface)
+			{
+				sceneOverlay->SetHighScore(userInterface->GetHighScore());
+			}
+			sceneOverlay->Show(SceneOverlay::OverlayType::GameOver);
 		}
-		else
+
+		// 2. Pause üũ - ESC Ű�� ������ �� (�������̰� ������ ���� ����)
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape) && !sceneOverlay->IsVisible())
 		{
-			++it;
+			sceneOverlay->Show(SceneOverlay::OverlayType::Pause);
+		}
+
+		// SceneOverlay ������Ʈ (�׻� ������Ʈ)
+		sceneOverlay->Update(dt);
+	}
+
+	// �������̰� ǥ�õ��� ���� ���� ���� ������Ʈ
+	if (!sceneOverlay || !sceneOverlay->IsVisible())
+	{
+		Scene::Update(dt);
+
+		if (userInterface)
+		{
+			userInterface->SetScore(score);
+			userInterface->SetZombieCount(zombieList);
+
+			// ����ִ� ���� 0�� �Ǹ� Victory üũ
+			int aliveCount = 0;
+			for (auto* zombie : zombieList)
+			{
+				if (zombie && zombie->GetActive() && zombie->GetType() != Zombie::Types::Blood)
+				{
+					aliveCount++;
+				}
+			}
+
+			// ���̺� Ŭ���� ���� (������ ������ ������ óġ�ؾ� ��)
+			if (aliveCount == 0)
+			{
+				if (hasBoss && !bossDefeated)
+				{
+					// ������ ������ ���� óġ���� ���� - ���
+				}
+				else
+				{
+					// ���̺� Ŭ���� - Victory �������� ǥ��
+					if (sceneOverlay && !sceneOverlay->IsVisible())
+					{
+						sceneOverlay->SetScore(score);
+						sceneOverlay->SetWave(wave);
+						sceneOverlay->Show(SceneOverlay::OverlayType::Victory);
+					}
+				}
+			}
+		}
+
+		auto it = zombieList.begin();
+		while (it != zombieList.end())
+		{
+			if (!(*it)->GetActive())
+			{
+				zombiePool.push_back(*it);
+				it = zombieList.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		worldView.setCenter(player->GetPosition());
+
+		// ���� ����� (����׿�)
+		if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Game);
 		}
 	}
-
-	worldView.setCenter(player->GetPosition());
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Game);
-	}
-
-	if (userInterface)
-	{
-		userInterface->SetScore(score);
-		userInterface->SetZombieCount(zombieList);
-	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::T))
-	{
-		turret->Spawn(player->GetPosition());
-	}
-
-	if (userInterface->GetRemainZombie() == 0)
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
-	}
-
-	if (userInterface->GetRemainZombie() == 0)
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Upgrade);
-	}
-	//userInterface->SetScore(score);
-	////userInterface->SetWaveCount(currentWave); LMJ: Will Add this when Wave is merged together.
-	//userInterface->SetZombieCount(zombieList.size());
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -170,14 +207,18 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 
 	window.setView(uiView);
-	userInterface->SetScore(score);
+	if (userInterface)
+	{
+		userInterface->SetScore(score);
+		userInterface->Draw(window);
+	}
 
 	window.setView(uiView);
 	window.draw(cursor);
 
-	if (userInterface)
+	if (sceneOverlay)
 	{
-		userInterface->Draw(window);
+		sceneOverlay->Draw(window);
 	}
 }
 

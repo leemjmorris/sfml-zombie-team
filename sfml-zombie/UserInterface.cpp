@@ -6,6 +6,7 @@
 #include "TextGo.h"
 #include <fstream>
 #include <iostream>
+#include "SceneOverlay.h"
 
 UserInterface::UserInterface(const std::string& name)
     : GameObject(name)
@@ -112,23 +113,34 @@ void UserInterface::Draw(sf::RenderWindow& window)
 void UserInterface::SetPosition(const sf::Vector2f& pos)
 {
     GameObject::SetPosition(pos);
-    //item.setPosition(pos);
+    ammoImage.setPosition(pos);
 }
 
 void UserInterface::SetRotation(float rot)
 {
+    GameObject::SetRotation(rot);
+    ammoImage.setRotation(rot);
 }
 
 void UserInterface::SetScale(const sf::Vector2f& s)
 {
+    GameObject::SetScale(s);
+    ammoImage.setScale(s);
 }
 
 void UserInterface::SetOrigin(const sf::Vector2f& o)
 {
+    GameObject::SetOrigin(o);
+    ammoImage.setOrigin(o);
 }
 
 void UserInterface::SetOrigin(Origins preset)
 {
+    GameObject::SetOrigin(preset);
+    if (preset != Origins::Custom)
+    {
+        Utils::SetOrigin(ammoImage, preset);
+    }
 }
 
 void UserInterface::CreateTextObjects()
@@ -185,7 +197,7 @@ void UserInterface::SetupTextPositions()
 
     textScore->SetPosition(sf::Vector2f(10.0f, 10.0f));
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - 200.0f, 10.0f));
-    textAmmo->SetPosition(sf::Vector2f(10.0f, windowSize.y - 80.0f));
+    textAmmo->SetPosition(sf::Vector2f(60.0f, windowSize.y - 68.0f));
     textWaveCount->SetPosition(sf::Vector2f(windowSize.x - 150.0f, windowSize.y - 80.0f));
     textZombieCount->SetPosition(sf::Vector2f(windowSize.x - 300.0f, windowSize.y - 40.0f));
 }
@@ -194,7 +206,7 @@ void UserInterface::SetupAmmoImage()
 {
     ammoImage.setTexture(TEXTURE_MGR.Get("graphics/ammo_icon.png"));
     ammoImage.setScale({ 1.f, 1.f });
-
+    ammoImage.setPosition({ 10.f, 10.f });
 }
 
 void UserInterface::SetupHealthBar()
@@ -294,6 +306,11 @@ void UserInterface::SetHighScore(int highScore)
     sf::FloatRect bounds = textHighScore->GetLocalBounds();
     textHighScore->SetPosition(sf::Vector2f(windowSize.x - bounds.width - 10.0f, 10.0f));
     textHighScore->SetOrigin(Origins::TL);
+}
+
+int UserInterface::GetHighScore()
+{
+    return highScore;
 }
 
 void UserInterface::SetCurrentAmmo(int currentAmmo)

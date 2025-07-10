@@ -155,7 +155,7 @@
     <ClCompile Include="SceneDev2.cpp" />
     <ClCompile Include="Framework\SceneMgr.cpp" />
     <ClCompile Include="SceneGame.cpp" />
-    <ClCompile Include="SceneGameOver.cpp" />
+    <ClCompile Include="SceneOverlay.cpp" />
     <ClCompile Include="SceneUpgrade.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="Skill.cpp" />
@@ -188,7 +188,7 @@
     <ClInclude Include="SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="SceneGame.h" />
-    <ClInclude Include="SceneGameOver.h" />
+    <ClInclude Include="SceneOverlay.h" />
     <ClInclude Include="SceneUpgrade.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Skill.h" />

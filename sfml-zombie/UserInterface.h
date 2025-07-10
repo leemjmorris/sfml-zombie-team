@@ -66,6 +66,7 @@ public:
 
     void SetScore(int score);
     void SetHighScore(int highScore);
+    int GetHighScore();
     void SetCurrentAmmo(int currentAmmo);
     void SetRemainAmmo(int remainAmmo);
     void SetWaveCount(int waveCount);

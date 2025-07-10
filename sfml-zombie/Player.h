@@ -24,6 +24,14 @@ public:
 	};
 
 protected:
+
+	sf::Text warningText;
+	sf::Font* warningFont = nullptr;
+	std::string warningMessage = "";
+	float warningTimer = 0.f;  //blinker timer for the warning message.
+	bool showWarning = false;
+	bool isVisible = false;
+
 	sf::Sprite body;
 	std::string texId = "graphics/player.png";
 
@@ -93,10 +101,8 @@ public:
 	void Shoot();
 	void OnDamage(int damage);
 
-	// player upgrade function
 	void Upgrade(UpgradeType type);
 
-	//LMJ: Health related methods. Used in UserInterface.
 	int GetHp() const { return hp; }
 	int GetMaxHp() const { return maxHp; }
 
@@ -105,6 +111,10 @@ public:
 	int GetCurrentAmmo() { return currentAmmo; }
 	void SetCurrentAmmo(int ammo) { currentAmmo = ammo; }
 	int GetRemainAmmo() { return remainAmmo; }
+
+	void SetWarningMessage();
+	void UpdateWarningMessage(float dt);
+	void DrawWarningMessage(sf::RenderWindow& window);
 
 	void SetSpeed(float sp) { speed = sp; }
 	float GetSpeed() const { return speed; }
