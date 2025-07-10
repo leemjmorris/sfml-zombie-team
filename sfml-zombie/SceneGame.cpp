@@ -192,6 +192,10 @@ void SceneGame::Update(float dt)
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
 	//}
+	if (InputMgr::GetKeyDown(sf::Keyboard::T))
+	{
+		turret->Spawn(player->GetPosition());
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
