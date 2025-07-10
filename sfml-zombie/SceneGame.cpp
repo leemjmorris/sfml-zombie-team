@@ -121,91 +121,77 @@ void SceneGame::Update(float dt)
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 
 	// �������� ���� ó�� (�׻� ���� üũ)
-	if (sceneOverlay)
-	{
-		// 1. GameOver üũ - �÷��̾� HP�� 0�� ��
-		if (player && player->GetHp() <= 0 && !sceneOverlay->IsVisible())
-		{
-			sceneOverlay->SetScore(score);
-			if (userInterface)
-			{
-				sceneOverlay->SetHighScore(userInterface->GetHighScore());
-			}
-			sceneOverlay->Show(SceneOverlay::OverlayType::GameOver);
-		}
+	//if (sceneOverlay)
+	//{
+	//	// 1. GameOver üũ - �÷��̾� HP�� 0�� ��
+	//	if (player && player->GetHp() <= 0 && !sceneOverlay->IsVisible())
+	//	{
+	//		sceneOverlay->SetScore(score);
+	//		if (userInterface)
+	//		{
+	//			sceneOverlay->SetHighScore(userInterface->GetHighScore());
+	//		}
+	//		sceneOverlay->Show(SceneOverlay::OverlayType::GameOver);
+	//	}
 
-		// 2. Pause üũ - ESC Ű�� ������ �� (�������̰� ������ ���� ����)
-		if (InputMgr::GetKeyDown(sf::Keyboard::Escape) && !sceneOverlay->IsVisible())
-		{
-			sceneOverlay->Show(SceneOverlay::OverlayType::Pause);
-		}
+	//	// 2. Pause üũ - ESC Ű�� ������ �� (�������̰� ������ ���� ����)
+	//	if (InputMgr::GetKeyDown(sf::Keyboard::Escape) && !sceneOverlay->IsVisible())
+	//	{
+	//		sceneOverlay->Show(SceneOverlay::OverlayType::Pause);
+	//	}
 
-		// SceneOverlay ������Ʈ (�׻� ������Ʈ)
-		sceneOverlay->Update(dt);
-	}
+	//	// SceneOverlay ������Ʈ (�׻� ������Ʈ)
+	//	sceneOverlay->Update(dt);
+	//}
 
 	// �������̰� ǥ�õ��� ���� ���� ���� ������Ʈ
-	if (!sceneOverlay || !sceneOverlay->IsVisible())
+	/*if (!sceneOverlay || !sceneOverlay->IsVisible())
+	{*/
+	Scene::Update(dt);
+
+	if (userInterface)
 	{
-		Scene::Update(dt);
+		userInterface->SetScore(score);
+		userInterface->SetZombieCount(zombieList);
 
-		if (userInterface)
+		// ����ִ� ���� 0�� �Ǹ� Victory üũ
+		int aliveCount = 0;
+		for (auto* zombie : zombieList)
 		{
-			userInterface->SetScore(score);
-			userInterface->SetZombieCount(zombieList);
-
-			// ����ִ� ���� 0�� �Ǹ� Victory üũ
-			int aliveCount = 0;
-			for (auto* zombie : zombieList)
+			if (zombie && zombie->GetActive() && zombie->GetType() != Zombie::Types::Blood)
 			{
-				if (zombie && zombie->GetActive() && zombie->GetType() != Zombie::Types::Blood)
-				{
-					aliveCount++;
-				}
-			}
-
-			// ���̺� Ŭ���� ���� (������ ������ ������ óġ�ؾ� ��)
-			if (aliveCount == 0)
-			{
-				if (hasBoss && !bossDefeated)
-				{
-					// ������ ������ ���� óġ���� ���� - ���
-				}
-				else
-				{
-					// ���̺� Ŭ���� - Victory �������� ǥ��
-					if (sceneOverlay && !sceneOverlay->IsVisible())
-					{
-						sceneOverlay->SetScore(score);
-						sceneOverlay->SetWave(wave);
-						sceneOverlay->Show(SceneOverlay::OverlayType::Victory);
-					}
-				}
+				aliveCount++;
 			}
 		}
 
-		auto it = zombieList.begin();
-		while (it != zombieList.end())
+		if (aliveCount == 0)
 		{
-			if (!(*it)->GetActive())
-			{
-				zombiePool.push_back(*it);
-				it = zombieList.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-
-		worldView.setCenter(player->GetPosition());
-
-		// ���� ����� (����׿�)
-		if (InputMgr::GetKeyDown(sf::Keyboard::Return))
-		{
-			SCENE_MGR.ChangeScene(SceneIds::Game);
+			SCENE_MGR.ChangeScene(SceneIds::Upgrade);
 		}
 	}
+
+	auto it = zombieList.begin();
+	while (it != zombieList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			zombiePool.push_back(*it);
+			it = zombieList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	worldView.setCenter(player->GetPosition());
+
+	// ���� ����� (����׿�)
+	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
+	//}
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

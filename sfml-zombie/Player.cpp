@@ -286,7 +286,7 @@ void Player::Upgrade(UpgradeType type)
 	switch (type)
 	{
 	case Player::UpgradeType::FireRate:
-		shootInterval *= 0.2f;
+		shootInterval *= 0.8f;
 		break;
 	case Player::UpgradeType::ClipSize:
 		ammoUpgradeMount += 1;
@@ -295,7 +295,7 @@ void Player::Upgrade(UpgradeType type)
 		maxHp += 50;
 		break;
 	case Player::UpgradeType::Speed:
-		speed += 5.f;
+		speed += 20.f;
 		break;
 	case Player::UpgradeType::HealthPickUp:
 		healItem->Upgrade(ItemGo::UpgradeType::Heal);

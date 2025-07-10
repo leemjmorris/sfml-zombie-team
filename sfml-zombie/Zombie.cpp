@@ -291,10 +291,6 @@ void Zombie::OnDamage(int damage)
 		while (accumulatedDamage >= 150)
 		{
 			Shoot();
-			Shoot();
-			Shoot();
-			Shoot();
-			Shoot();
 			accumulatedDamage -= 150;
 		}
 	}
