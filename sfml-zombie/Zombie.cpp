@@ -155,6 +155,14 @@ void Zombie::Update(float dt)
 				}
 			}
 		}
+		if (GetCurrentType() == "graphics/boss.png")
+		{
+			if (attackTimer >= attackInterval)
+			{
+				Shoot();
+				attackTimer = 0.f;
+			}
+		}
 	}
 
 	zombieList = sceneGame->GetZombies();
@@ -247,7 +255,7 @@ void Zombie::SetType(Types type)
 		maxHp = 100000000;
 		speed = 150.f;
 		damage = 99.f;
-		attackInterval = 0.f;
+		attackInterval = 1.f;
 		break;
 	case Types::Blood:
 		texId = "graphics/blood.png";
@@ -315,7 +323,7 @@ void Zombie::Shoot()
 	sf::Transform t;
 	t.rotate(GetRotation());
 	sf::Vector2f worldFireOffset = t.transformPoint(fireOffset);
-	bullet->Fire(position + worldFireOffset * 10.f, direction, 300.f, 20);
+	bullet->Fire(position + worldFireOffset * 10.f, direction, 600.f, 20);
 
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
